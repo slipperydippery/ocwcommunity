@@ -1,0 +1,22 @@
+nav.navbar {
+	background: white;
+}
+
+.navbar-brand {
+	font-family: 'Oswald';
+	text-transform: uppercase;
+	line-height: 26px;
+	.title--first {
+		color: $primary;
+	}
+	.title--second {
+		color: $secondary
+	}
+	.title--third {
+		color: $primary;
+	}
+}
+
+a.nav-link--main {
+	text-transform: uppercase;
+}
