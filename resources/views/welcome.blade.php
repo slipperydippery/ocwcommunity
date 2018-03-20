@@ -12,7 +12,7 @@
         </div>
     </div>
 
-    <div class="container">
+    <div class="container segment segment--welcome">
         <div class="row card-group">
             <div class="col-sm-4">
                 <div class="card">
@@ -20,7 +20,7 @@
                     <div class="card-body">
                         <h5 class="card-title">Forum</h5>
                         <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                        <a href=" {{ URL::route('post.index') }} " class="btn btn-primary">Go somewhere</a>
                     </div>
                 </div>
             </div>

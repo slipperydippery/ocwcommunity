@@ -4,7 +4,7 @@
 
 	<div class="container">
 		<div class="row">
-			<div class="col-12 col-md-8 article">
+			<div class="col-12 col-md-8 pageblock article">
 				<h1 class="display-4">Dit is een titel van een artikel. Meestal is hij veel te lang. </h1>
 				<p class="article-info"><a href="#" class="article-info--author">Maarten de Jager</a> - <span class="article-info--date">2 Februari</span></p>
 				<div class="article-tags">

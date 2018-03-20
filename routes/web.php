@@ -21,3 +21,5 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/page', function() {
 	return view('page');
 });
+
+Route::resource('post', 'PostController');

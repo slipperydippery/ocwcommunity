@@ -2,7 +2,17 @@ body {
 	color: $primary;
 }
 
-.article {
-	background: white;
+.pageblock {
 	padding: 1.5rem 3rem;
+	background: white;
+	margin-bottom: 2rem;
+}
+
+.segment {
+	margin-top: 2rem;
+}
+
+
+.segment--welcome {
+
 }

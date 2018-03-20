@@ -10008,9 +10008,14 @@ body {
   color: #11536D;
 }
 
-.article {
-  background: white;
+.pageblock {
   padding: 1.5rem 3rem;
+  background: white;
+  margin-bottom: 2rem;
+}
+
+.segment {
+  margin-top: 2rem;
 }
 
 nav.navbar {
@@ -10048,6 +10053,15 @@ a.nav-link--main {
   padding: 1.25rem;
 }
 
+.sidebar .sidebar--block {
+  margin-bottom: 2rem;
+}
+
+.sidebar .sidebar--block label {
+  margin-bottom: .3rem;
+  font-size: .8rem;
+}
+
 .article-info {
   border-bottom: 1px solid;
   font-size: .8rem;
@@ -10068,6 +10082,24 @@ a.nav-link--main {
 
 .article-tags button {
   font-size: .8rem;
+}
+
+.forum-post {
+  border-bottom: 1px solid;
+  margin-bottom: 2rem;
+}
+
+.forum-post .post-info {
+  font-size: .8rem;
+}
+
+.forum-post .post-info .post-info--author {
+  font-weight: 800;
+  color: #FC7474;
+}
+
+.forum-post .post-info .post-info--date {
+  color: #adb5bd;
 }
 
 

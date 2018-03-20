@@ -11,9 +11,9 @@
         <div class="collapse navbar-collapse col" id="navbarSupportedContent">
             <!-- Left Side Of Navbar -->
             <ul class="navbar-nav col">
-            	<li><a class="nav-link nav-link--main mr-5 align-top" href="/page">Forum</a></li>
+            	<li><a class="nav-link nav-link--main mr-5 align-top" href=" {{ URL::route('post.index') }} ">Forum</a></li>
             	<li><a class="nav-link nav-link--main mr-5 align-bottom" href="#">Beslisboom</a></li>
-            	<li><a class="nav-link nav-link--main mr-5" href="#">Kennisbank</a></li>
+            	<li><a class="nav-link nav-link--main mr-5" href="/page">Kennisbank</a></li>
 
             </ul>
 

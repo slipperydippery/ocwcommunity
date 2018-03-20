@@ -1,0 +1,22 @@
+.forum {
+}
+
+.forum-list {
+}
+
+.forum-post {
+	border-bottom: 1px solid;
+	margin-bottom: 2rem;
+	.post-info {
+		font-size: .8rem;
+
+		.post-info--author {
+			font-weight: 800;
+			color: $transparent-red;
+		}	
+
+		.post-info--date {
+			color: $gray-500;
+		}
+	}
+}
