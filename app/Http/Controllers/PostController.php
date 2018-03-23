@@ -113,8 +113,10 @@ class PostController extends Controller
 
         $post->tags()->sync([]);
 
-        foreach($request->tags as $tag) {
-            $post->tags()->save(Tag::find($tag));
+        if(isset($request->tags)){
+            foreach($request->tags as $tag) {
+                $post->tags()->save(Tag::find($tag));
+            }
         }
 
         return Redirect::route('post.show', $post);
