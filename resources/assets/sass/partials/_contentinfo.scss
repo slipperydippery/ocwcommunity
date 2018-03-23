@@ -1,0 +1,30 @@
+.user-content:hover .user-content--edit-links {
+	opacity: 1;
+}
+
+.user-content--info {
+	font-size: .8rem;
+
+	.user-content--info--author {
+		font-weight: 800;
+		color: $transparent-red;
+	}	
+
+	.user-content--info--date {
+		color: $gray-500;
+	}
+
+	.user-content--edit-links {
+		display: inline-block;
+		float: right;
+		opacity: 0;
+		transition: all .5s;
+		a {
+			margin-left: 1rem;
+		}
+	}
+}
+
+.user-content--info__post, .user-content--info__article {
+	border-bottom: 1px solid;
+}

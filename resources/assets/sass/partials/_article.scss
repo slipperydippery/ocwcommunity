@@ -1,20 +1,6 @@
 .article {
 }
 
-.article-info {
-	border-bottom: 1px solid;
-	font-size: .8rem;
-
-	.article-info--author {
-		font-weight: 800;
-		color: $transparent-red;
-	}	
-
-	.article-info--date {
-		color: $gray-500;
-	}
-}
-
 .article-tags {
 	margin: 0 0 1rem 0;
 	button {

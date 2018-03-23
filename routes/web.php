@@ -11,11 +11,11 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 Auth::routes();
+
+Route::view('/', 'welcome');
+Route::redirect('/home', '/dashboard');
+
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/page', function() {
@@ -23,3 +23,6 @@ Route::get('/page', function() {
 });
 
 Route::resource('post', 'PostController');
+Route::resource('user', 'UserController');
+Route::resource('comment', 'CommentController');
+Route::resource('post.comment', 'PostCommentController');

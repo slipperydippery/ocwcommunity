@@ -29,8 +29,10 @@
 @import "partials/sidebar";
 
 // Specific Element layouts
+@import "partials/contentinfo";
 @import "partials/article";
 @import "partials/forum";
+@import "partials/comment";
 
 // Page specific layout
 @import "partials/welcome";

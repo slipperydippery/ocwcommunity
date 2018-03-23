@@ -11,134 +11,52 @@
 		</div>
 		<div class="row">
 			<div class="col-md-9 pageblock forum-list">
-				<div class="forum-post">
-					<a href="#"><h5>Waar kan ik informatie vinden over de nieuwe regelgeving omtrent volledige samenwerking?</h5></a>
-					<p class="post-info"><a href="#" class="post-info--author">Maarten de Jager</a> - <span class="post-info--date">2 Februari</span></p>
-					<p class="snippet">Dit is een kort stukje van de tekst. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex. </p>
-					<div class="article-tags">
-						<button type="button" class="btn btn-sm btn-outline-primary"  data-container="body" data-toggle="popover" data-placement="bottom" data-content="Vivamus
-	sagittis lacus vel augue laoreet rutrum faucibus.">
-							Orientatie
-						</button>
-						<button type="button" class="btn btn-sm btn-outline-primary"  data-container="body" data-toggle="popover" data-placement="bottom" data-content="Vivamus
-	sagittis lacus vel augue laoreet rutrum faucibus.">
-							Bestuurders
-						</button>
-						<button type="button" class="btn btn-sm btn-outline-primary"  data-container="body" data-toggle="popover" data-placement="bottom" data-content="Vivamus
-	sagittis lacus vel augue laoreet rutrum faucibus.">
-							Volledige Samenwerking
-						</button>
+
+				@foreach($posts as $post)
+					<div class="forum-post">
+						<a href=" {{ URL::route('post.show', $post) }} ">
+							<h5> {{ $post->title }} </h5>
+						</a>
+						<p class="post-info">
+							<a href="#" class="post-info--author"> {{ $post->author->name }} </a> 
+							- 
+							<span class="post-info--date"> {{ $post->created_at->diffForHumans() }} </span>
+						</p>
+						<p class="snippet"> {{ str_limit($post->body, 300) }} </p>
+						<div class="article-tags">
+							@foreach($post->tags as $tag)
+								<a href="#" class="btn btn-sm btn-outline-primary">
+									{{ $tag->name }}
+								</a>
+							@endforeach
+						</div>
 					</div>
-				</div>
-
-				<div class="forum-post">
-					<a href="#"><h5>Actief integreren van gescheiden Blackboard omgevingen.</h5></a>
-					<p class="post-info"><a href="#" class="post-info--author">Maarten de Jager</a> - <span class="post-info--date">2 Februari</span></p>
-					<p class="snippet">Dit is een kort stukje van de tekst. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex. </p>
-					<div class="article-tags">
-						<button type="button" class="btn btn-sm btn-outline-primary"  data-container="body" data-toggle="popover" data-placement="bottom" data-content="Vivamus
-	sagittis lacus vel augue laoreet rutrum faucibus.">
-							Uitvoering
-						</button>
-						<button type="button" class="btn btn-sm btn-outline-primary"  data-container="body" data-toggle="popover" data-placement="bottom" data-content="Vivamus
-	sagittis lacus vel augue laoreet rutrum faucibus.">
-							Bestuurders
-						</button>
-						<button type="button" class="btn btn-sm btn-outline-primary"  data-container="body" data-toggle="popover" data-placement="bottom" data-content="Vivamus
-	sagittis lacus vel augue laoreet rutrum faucibus.">
-							Volledige Samenwerking
-						</button>
-					</div>
-				</div>
-
-				<div class="forum-post">
-					<a href="#"><h5>Wie kan me helpen met het opzetten van een gezamenlijk inkoop systeem?</h5></a>
-					<p class="post-info"><a href="#" class="post-info--author">Maarten de Jager</a> - <span class="post-info--date">2 Februari</span></p>
-					<p class="snippet">Dit is een kort stukje van de tekst. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex. </p>
-					<div class="article-tags">
-						<button type="button" class="btn btn-sm btn-outline-primary"  data-container="body" data-toggle="popover" data-placement="bottom" data-content="Vivamus
-	sagittis lacus vel augue laoreet rutrum faucibus.">
-							Uitvoering
-						</button>
-						<button type="button" class="btn btn-sm btn-outline-primary"  data-container="body" data-toggle="popover" data-placement="bottom" data-content="Vivamus
-	sagittis lacus vel augue laoreet rutrum faucibus.">
-							HRM
-						</button>
-						<button type="button" class="btn btn-sm btn-outline-primary"  data-container="body" data-toggle="popover" data-placement="bottom" data-content="Vivamus
-	sagittis lacus vel augue laoreet rutrum faucibus.">
-							Volledige Samenwerking
-						</button>
-						<button type="button" class="btn btn-sm btn-outline-primary"  data-container="body" data-toggle="popover" data-placement="bottom" data-content="Vivamus
-	sagittis lacus vel augue laoreet rutrum faucibus.">
-							Gedeeltelijke Samenwerking
-						</button>
-					</div>
-				</div>
-
-
+				@endforeach
+				
 			</div>
+
 			<div class="col-md-3">
 				<div class="sidebar">
 					<h4>Filters</h4>
-					<div class="sidebar--block">
-						<h5>Fase</h5>
-						<div class="btn-group-toggle" data-toggle="buttons">
-							<label class="btn btn-outline-secondary">
-							<input type="checkbox" checked autocomplete="off"> Orientatie
-							</label>
-							<label class="btn btn-outline-secondary">
-							<input type="checkbox" checked autocomplete="off"> Afweging
-							</label>
-							<label class="btn btn-outline-secondary">
-							<input type="checkbox" checked autocomplete="off"> Besluitvorming
-							</label>
-							<label class="btn btn-outline-secondary">
-							<input type="checkbox" checked autocomplete="off"> Uitvoering
-							</label>
+					@foreach($tagcategories as $tagcategory)
+						<div class="sidebar--block">
+							<h5> {{ $tagcategory->name }} </h5>
+							<div class="btn-group-toggle" data-toggle="buttons">
+								@foreach($tagcategory->tags as $tag)
+									<label class="btn btn-outline-secondary">
+										<input type="checkbox" checked autocomplete="off"> {{ $tag->name }}
+									</label>
+								@endforeach
+							</div>
 						</div>
-					</div>
-	
-					<div class="sidebar--block">
-						<h5>Afdeling/Rollen</h5>
-						<div class="btn-group-toggle" data-toggle="buttons">
-							<label class="btn btn-outline-secondary">
-							<input type="checkbox" checked autocomplete="off"> Bestuurders
-							</label>
-							<label class="btn btn-outline-secondary">
-							<input type="checkbox" checked autocomplete="off"> Docent(teams)
-							</label>
-							<label class="btn btn-outline-secondary">
-							<input type="checkbox" checked autocomplete="off"> ICT
-							</label>
-							<label class="btn btn-outline-secondary">
-							<input type="checkbox" checked autocomplete="off"> Communicatie
-							</label>
-							<label class="btn btn-outline-secondary">
-							<input type="checkbox" checked autocomplete="off"> HRM
-							</label>
-						</div>
-					</div>
-						
-					<div class="sidebar--block">
-						<h5>Sanemwerkingsvorm</h5>
-						<div class="btn-group-toggle" data-toggle="buttons">
-							<label class="btn btn-outline-secondary">
-							<input type="checkbox" checked autocomplete="off"> Volledige Samenwerking
-							</label>
-							<label class="btn btn-outline-secondary">
-							<input type="checkbox" checked autocomplete="off"> Gedeeltelijke Samenwerking
-							</label>
-							<label class="btn btn-outline-secondary">
-							<input type="checkbox" checked autocomplete="off"> Nog een vorm
-							</label>
-							<label class="btn btn-outline-secondary">
-							<input type="checkbox" checked autocomplete="off"> Nog een vorm
-							</label>
-						</div>
-					</div>
-
+					@endforeach
+				</div>
+				<div class="sidebar">
+					<a href=" {{ URL::route('post.create') }} " class="btn btn-primary" > Plaats een nieuw bericht </a>
 				</div>
 			</div>
+
+
 		</div>
 	</div>
 

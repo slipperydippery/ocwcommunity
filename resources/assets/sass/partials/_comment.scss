@@ -1,0 +1,19 @@
+.comment {
+    border: 1px solid #e0e0e0;
+    border-width: 1px 0 0 0;
+    padding: 1.5rem 0;
+
+    .comment-author {
+    	img {
+	    	border: 1px solid $gray-300;
+			width: 100%;
+			border-radius: 50%;
+    	}
+    }
+}
+
+.addcomment {
+    border: 1px solid #e0e0e0;
+    border-width: 1px 0 0 0;
+    padding: 3rem 0 0 0;
+}

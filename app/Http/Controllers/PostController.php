@@ -2,11 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use Auth;
+use App\Tag;
 use App\Post;
+use App\Tagcategory;
 use Illuminate\Http\Request;
+use PhpParser\Node\Stmt\Label;
+use Illuminate\Support\Facades\Redirect;
 
 class PostController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth', ['except' => ['index', 'show']]);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -14,8 +24,9 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::get();
-        return view('post.index', compact('posts'));
+        $tagcategories = Tagcategory::get();
+        $posts = Post::orderBy('created_at','desc')->get();
+        return view('post.index', compact('posts', 'tagcategories'));
     }
 
     /**
@@ -25,7 +36,8 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+        $tagcategories = Tagcategory::with('tags')->get();
+        return view('post.create', compact('tagcategories'));
     }
 
     /**
@@ -36,7 +48,24 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // return $request; 
+ 
+        $this->validate(request(), [
+            'title' => 'required|min:3|max:140',
+            'body' => 'required|min:10'
+        ]);
+
+        $post = Post::create([
+            'title' => $request->title,
+            'body' => $request->body,
+            'user_id' => Auth::user()->id,
+        ]);
+
+        foreach($request->tags as $tag) {
+            $post->tags()->save(Tag::find($tag));
+        }
+
+        return Redirect::route('post.index');
     }
 
     /**
@@ -47,7 +76,7 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        return $post->title;
+        return view('post.show', compact('post'));
     }
 
     /**
@@ -58,7 +87,8 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        //
+        $tagcategories = Tagcategory::with('tags')->get();
+        return view('post.edit', compact('post', 'tagcategories'));
     }
 
     /**

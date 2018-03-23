@@ -4,9 +4,11 @@
 
 	<div class="container">
 		<div class="row">
-			<div class="col-12 col-md-8 pageblock article">
+			<div class="col-12 col-md-8 pageblock article user-content">
 				<h1 class="display-4">Dit is een titel van een artikel. Meestal is hij veel te lang. </h1>
-				<p class="article-info"><a href="#" class="article-info--author">Maarten de Jager</a> - <span class="article-info--date">2 Februari</span></p>
+				<p class="user-content--info user-content--info__article">
+					<a href=" # " class="user-content--info--author">Maarten de Jager</a> - <span class="user-content--info--date">2 Februari</span>
+				</p>
 				<div class="article-tags">
 					<button type="button" class="btn btn-sm btn-outline-primary"  data-container="body" data-toggle="popover" data-placement="bottom" data-content="Vivamus
 sagittis lacus vel augue laoreet rutrum faucibus.">
