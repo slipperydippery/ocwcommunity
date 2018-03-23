@@ -100,7 +100,7 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
-        return $request;
+        // return $request;
 
         $this->validate(request(), [
             'title' => 'required|min:3|max:140',
