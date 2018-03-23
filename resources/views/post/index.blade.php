@@ -20,7 +20,7 @@
 						<p class="post-info">
 							<a href="#" class="post-info--author"> {{ $post->author->name }} </a> 
 							- 
-							<span class="post-info--date"> {{ $post->created_at->diffForHumans() }} </span>
+							<span class="post-info--date"> {{ Date::parse($post->created_at)->diffForHumans() }} </span>
 						</p>
 						<p class="snippet"> {{ str_limit($post->body, 300) }} </p>
 						<div class="article-tags">
