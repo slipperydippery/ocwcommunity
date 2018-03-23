@@ -33,7 +33,7 @@
 				<h5 class="inline-title"> {{ $tagcategory->name }}: </h5>
 				@foreach($tagcategory->tags as $tag)
 					<label class="btn btn-sm btn-outline-primary {{ collect(old('tags', request('tags') ?? isset($post->tags) ? $post->tags->pluck('id') : null ))->contains($tag->id) ? 'active' : '' }}">
-					    <input type="checkbox" name="tags[]" value=" {{ $tag->id }} " />
+					    <input type="checkbox" name="tags[]" value=" {{ $tag->id }} " {{ collect(old('tags', request('tags') ?? isset($post->tags) ? $post->tags->pluck('id') : null ))->contains($tag->id) ? 'checked' : '' }}/>
 				        {{ $tag->name }}
 					</label>
 				@endforeach
