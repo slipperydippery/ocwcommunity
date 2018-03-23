@@ -48,8 +48,6 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        // return $request; 
- 
         $this->validate(request(), [
             'title' => 'required|min:3|max:140',
             'body' => 'required|min:10'
@@ -61,10 +59,12 @@ class PostController extends Controller
             'user_id' => Auth::user()->id,
         ]);
 
-        foreach($request->tags as $tag) {
-            $post->tags()->save(Tag::find($tag));
+        if(isset($request->tags)){
+            foreach($request->tags as $tag) {
+                $post->tags()->save(Tag::find($tag));
+            }
         }
-
+        
         return Redirect::route('post.index');
     }
 
@@ -100,7 +100,24 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
-        //
+        return $request;
+
+        $this->validate(request(), [
+            'title' => 'required|min:3|max:140',
+            'body' => 'required|min:10'
+        ]);
+
+        $post->title = $request->title;
+        $post->body = $request->body;
+        $post->save();
+
+        $post->tags()->sync([]);
+
+        foreach($request->tags as $tag) {
+            $post->tags()->save(Tag::find($tag));
+        }
+
+        return Redirect::route('post.show', $post);
     }
 
     /**

@@ -12,6 +12,7 @@
 		<div class="row">
 			<div class="col-md-9 pageblock forum-list">
 				<form action="{{ route('post.update', $post) }}" method="post" accept-charset="utf-8">
+					{{ method_field('PUT') }}
 				    {{ csrf_field() }}
 					@include('post.partials.form', ['submittext' => 'Plaats Bericht'])
 				</form>

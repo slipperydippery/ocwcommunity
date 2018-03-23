@@ -9,7 +9,7 @@
 		<p class="user-content--info">
 			<a href=" {{ URL::route('user.show', $post->author) }} " class="user-content--info--author"> {{ $post->author->name }} </a> 
 			- 
-			<span class="user-content--info--date"> {{ $post->created_at->diffForHumans() }} </span>
+			<span class="user-content--info--date"> {{ Date::parse($post->created_at)->diffForHumans() }} </span>
 			<span class="user-content--edit-links">
 
 				<a href=" {{ URL::route('comment.edit', $thiscomment) }} "> <img src="/img/edit.svg" alt=""> </a>
