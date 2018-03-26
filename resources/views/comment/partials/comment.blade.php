@@ -17,11 +17,15 @@
 				</span>
 			@endif
 		</p>
-		
 		<comment :comment=" {{ $thiscomment }} "></comment>
+		<noscript>
+			@foreach(nl2a($thiscomment->body) as $paragraph)
+				<p> {{ $paragraph }} </p>
+			@endforeach
+		</noscript>
 
 	</div>
-</div>
+</div>	
 
 
 
