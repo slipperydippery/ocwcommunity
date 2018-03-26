@@ -13876,14 +13876,11 @@ __webpack_require__(13);
 
 window.Vue = __webpack_require__(36);
 
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
-
 Vue.component('example-component', __webpack_require__(39));
+Vue.component('comment', __webpack_require__(48));
+Vue.component('toggle-comment', __webpack_require__(51));
 
+window.Event = new Vue();
 var app = new Vue({
   el: '#app'
 });
@@ -47329,6 +47326,324 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 44 */,
+/* 45 */,
+/* 46 */,
+/* 47 */,
+/* 48 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(40)
+/* script */
+var __vue_script__ = __webpack_require__(49)
+/* template */
+var __vue_template__ = __webpack_require__(50)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\components\\Comment.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-d48d2490", Component.options)
+  } else {
+    hotAPI.reload("data-v-d48d2490", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 49 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: ['comment'],
+
+    data: function data() {
+        return {
+            edit: false,
+            editcomment: ''
+        };
+    },
+    mounted: function mounted() {
+        var _this = this;
+
+        Event.$on('togglecomment' + this.comment.id, function () {
+            return _this.editComment();
+        });
+        this.editcomment = this.comment.body;
+    },
+
+
+    computed: {},
+
+    methods: {
+        textBoi: function textBoi(input) {
+            var paragraphs = [];
+            input.split("\n").forEach(function (text) {
+                if (text.trim()) {
+                    paragraphs.push(text);
+                }
+            });
+            return paragraphs;
+        },
+        editComment: function editComment() {
+            this.edit = true;
+        },
+        cancelEdit: function cancelEdit() {
+            this.editcomment = this.comment.body;
+            this.edit = false;
+        },
+        saveEdit: function saveEdit() {
+            var _this2 = this;
+
+            axios.post('/api/post/' + this.comment.commentable_id + '/comment/' + this.comment.id + '/update', {
+                comment: this.editcomment
+            }).then(function (response) {
+                _this2.comment.body = _this2.editcomment;
+                _this2.edit = false;
+            }).catch(function (e) {
+                return _this2.errors.push(e);
+            });
+        }
+    }
+});
+
+/***/ }),
+/* 50 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "col-10 comment-content" },
+    [
+      _vm._l(_vm.textBoi(_vm.comment.body), function(paragraph) {
+        return !_vm.edit
+          ? _c("p", [_vm._v("\n\t\t" + _vm._s(paragraph) + "\n\t")])
+          : _vm._e()
+      }),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group" }, [
+        _vm.edit
+          ? _c("textarea", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.editcomment,
+                  expression: "editcomment"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: { rows: "5" },
+              domProps: { value: _vm.editcomment },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.editcomment = $event.target.value
+                }
+              }
+            })
+          : _vm._e()
+      ]),
+      _vm._v(" "),
+      _vm.edit
+        ? _c("div", [
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-primary form-control",
+                on: { click: _vm.saveEdit }
+              },
+              [_vm._v(" Sla wijzigingen op ")]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-outline-secondary form-control",
+                on: { click: _vm.cancelEdit }
+              },
+              [_vm._v(" Annuleer ")]
+            )
+          ])
+        : _vm._e()
+    ],
+    2
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-d48d2490", module.exports)
+  }
+}
+
+/***/ }),
+/* 51 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(40)
+/* script */
+var __vue_script__ = __webpack_require__(52)
+/* template */
+var __vue_template__ = __webpack_require__(53)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\components\\ToggleComment.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-86dc6df8", Component.options)
+  } else {
+    hotAPI.reload("data-v-86dc6df8", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 52 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__app_js__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__app_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__app_js__);
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: ['comment'],
+
+    data: function data() {
+        return {};
+    },
+    mounted: function mounted() {},
+
+
+    computed: {},
+
+    methods: {
+        toggleComment: function toggleComment() {
+            Event.$emit('togglecomment' + this.comment.id);
+        }
+    }
+});
+
+/***/ }),
+/* 53 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "a",
+    {
+      attrs: { href: " # " },
+      on: {
+        click: function($event) {
+          $event.preventDefault()
+          return _vm.toggleComment($event)
+        }
+      }
+    },
+    [_c("img", { attrs: { src: "/img/edit.svg", alt: "" } })]
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-86dc6df8", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);

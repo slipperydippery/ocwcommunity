@@ -5,7 +5,7 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-12 forum">
-				<h1 class="display-4">Forum </h1>
+				<h1 class="display-4">Forum</h1>
 				
 			</div>
 		</div>
@@ -13,22 +13,31 @@
 			<div class="col-md-9 pageblock forum-list">
 
 				@foreach($posts as $post)
-					<div class="forum-post">
-						<a href=" {{ URL::route('post.show', $post) }} ">
-							<h5> {{ $post->title }} </h5>
-						</a>
-						<p class="post-info">
-							<a href="#" class="post-info--author"> {{ $post->author->name }} </a> 
-							- 
-							<span class="post-info--date"> {{ Date::parse($post->created_at)->diffForHumans() }} </span>
-						</p>
-						<p class="snippet"> {{ str_limit($post->body, 300) }} </p>
-						<div class="article-tags">
-							@foreach($post->tags as $tag)
-								<a href="#" class="btn btn-sm btn-outline-primary">
-									{{ $tag->name }}
-								</a>
-							@endforeach
+					<div class="forum-post row">
+						<div class="col">
+							<a href=" {{ URL::route('post.show', $post) }} ">
+								<h5> {{ $post->title }} </h5>
+							</a>
+							<p class="post-info">
+								<a href="#" class="post-info--author"> {{ $post->author->name }} </a> 
+								- 
+								<span class="post-info--date"> {{ Date::parse($post->created_at)->diffForHumans() }} </span>
+							</p>
+							<p class="snippet"> {{ str_limit($post->body, 300) }} </p>
+							<div class="article-tags">
+								@foreach($post->tags as $tag)
+									<a href="#" class="btn btn-sm btn-outline-primary">
+										{{ $tag->name }}
+									</a>
+								@endforeach
+							</div>
+						</div>
+						<div class="forum-post--commentcount d-flex flex-column justify-content-end">
+							<h4>
+								<p class="commentcount ">
+									{{ $post->comments->count() }}
+								</p>
+							</h4>
 						</div>
 					</div>
 				@endforeach

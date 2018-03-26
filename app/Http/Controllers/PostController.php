@@ -25,7 +25,7 @@ class PostController extends Controller
     public function index()
     {
         $tagcategories = Tagcategory::get();
-        $posts = Post::orderBy('created_at','desc')->get();
+        $posts = Post::orderBy('updated_at','desc')->get();
         return view('post.index', compact('posts', 'tagcategories'));
     }
 

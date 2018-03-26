@@ -1,26 +1,22 @@
 <div class="row comment user-content">
 	<div class="col-2 comment-author">
-		<a href=" {{ URL::route('user.show', $post->author) }} " class="user-content--info--author">
+		<a href=" {{ URL::route('user.show', $thiscomment->author) }} " class="user-content--info--author">
 			<img src="/img/user.svg" alt="">
 		</a>
 	</div>
 
 	<div class="col-10 comment-content">
 		<p class="user-content--info">
-			<a href=" {{ URL::route('user.show', $post->author) }} " class="user-content--info--author"> {{ $post->author->name }} </a> 
+			<a href=" {{ URL::route('user.show', $thiscomment->author) }} " class="user-content--info--author"> {{ $thiscomment->author->name }} </a> 
 			- 
-			<span class="user-content--info--date"> {{ Date::parse($post->created_at)->diffForHumans() }} </span>
+			<span class="user-content--info--date"> {{ Date::parse($thiscomment->created_at)->diffForHumans() }} </span>
 			<span class="user-content--edit-links">
-
-				<a href=" {{ URL::route('comment.edit', $thiscomment) }} "> <img src="/img/edit.svg" alt=""> </a>
-				<!-- Button trigger modal -->
-				<a href=" {{ URL::route('comment.destroy', $thiscomment) }} " data-toggle="modal" data-target="#confirmDeleteModal-{{ $thiscomment->id }}"> <img src="/img/trash.svg" alt=""> </a>
+				<toggle-comment :comment=" {{ $thiscomment }} "></toggle-comment>
+				<a href="#" data-toggle="modal" data-target="#confirmDeleteModal-{{ $thiscomment->id }}"> <img src="/img/trash.svg" alt=""> </a>
 			</span>
 		</p>
 		
-		@foreach(nl2a($thiscomment->body) as $paragraph)
-			<p> {{ $paragraph }} </p>
-		@endforeach
+		<comment :comment=" {{ $thiscomment }} "></comment>
 
 	</div>
 </div>

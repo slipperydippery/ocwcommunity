@@ -10,6 +10,14 @@ class Comment extends Model
 		'body', 'user_id', 'commentable_type', 'commentable_id'
 	];
 
+	/**
+     * All of the relationships to be touched.
+     *
+     * @var array
+     */
+    protected $touches = ['commentable'];
+    
+
     public function commentable()
     {
     	return $this->morphTo();

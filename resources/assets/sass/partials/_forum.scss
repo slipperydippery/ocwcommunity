@@ -6,7 +6,8 @@
 
 .forum-post {
 	border-bottom: 1px solid;
-	margin-bottom: 2rem;
+	padding-bottom: 1rem;
+	padding-top: 1rem;
 	.post-info {
 		font-size: .8rem;
 
@@ -17,6 +18,16 @@
 
 		.post-info--date {
 			color: $gray-500;
+		}
+	}
+	.forum-post--commentcount {
+		width: 2rem;
+		margin-left: 15px;
+		margin-right: 15px;
+
+		p.commentcount {
+			font-weight: 700;
+			opacity: .8;
 		}
 	}
 }

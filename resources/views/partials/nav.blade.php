@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-md navbar-light border-bottom">
     <div class="container d-flex">
         <a class="navbar-brand mr-4" href="{{ url('/') }}">
-            <img src="/img/logo_white.jpg" width="30" height="30" class="d-inline-block align-top mr-1" alt="Logo">
+            <img src="/img/logo.svg" width="30" height="30" class="d-inline-block align-top mr-1" alt="Logo">
             <span class="title--first">Community</span><span class="title--second">of</span><span class="title--third">Practice</span>
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">

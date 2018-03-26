@@ -26,3 +26,8 @@ Route::resource('post', 'PostController');
 Route::resource('user', 'UserController');
 Route::resource('comment', 'CommentController');
 Route::resource('post.comment', 'PostCommentController');
+
+
+// API routes
+
+Route::post('/api/post/{post}/comment/{comment}/update', 'ApiPostCommentController@update');

@@ -10110,7 +10110,8 @@ a.nav-link--main {
 
 .forum-post {
   border-bottom: 1px solid;
-  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  padding-top: 1rem;
 }
 
 .forum-post .post-info {
@@ -10124,6 +10125,17 @@ a.nav-link--main {
 
 .forum-post .post-info .post-info--date {
   color: #adb5bd;
+}
+
+.forum-post .forum-post--commentcount {
+  width: 2rem;
+  margin-left: 15px;
+  margin-right: 15px;
+}
+
+.forum-post .forum-post--commentcount p.commentcount {
+  font-weight: 700;
+  opacity: .8;
 }
 
 .post {
