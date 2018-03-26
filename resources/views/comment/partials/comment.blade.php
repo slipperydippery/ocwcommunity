@@ -10,10 +10,12 @@
 			<a href=" {{ URL::route('user.show', $thiscomment->author) }} " class="user-content--info--author"> {{ $thiscomment->author->name }} </a> 
 			- 
 			<span class="user-content--info--date"> {{ Date::parse($thiscomment->created_at)->diffForHumans() }} </span>
-			<span class="user-content--edit-links">
-				<toggle-comment :comment=" {{ $thiscomment }} "></toggle-comment>
-				<a href="#" data-toggle="modal" data-target="#confirmDeleteModal-{{ $thiscomment->id }}"> <img src="/img/trash.svg" alt=""> </a>
-			</span>
+			@if(Auth::user() == $thiscomment->author)
+				<span class="user-content--edit-links">
+					<toggle-comment :comment=" {{ $thiscomment }} "></toggle-comment>
+					<a href="#" data-toggle="modal" data-target="#confirmDeleteModal-{{ $thiscomment->id }}"> <img src="/img/trash.svg" alt=""> </a>
+				</span>
+			@endif
 		</p>
 		
 		<comment :comment=" {{ $thiscomment }} "></comment>
