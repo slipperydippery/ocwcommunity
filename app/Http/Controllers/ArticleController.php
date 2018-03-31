@@ -33,7 +33,7 @@ class ArticleController extends Controller
     public function create()
     {
         $article = Article::create([
-            'title' => '',
+            'title' => '[nieuw artikel]',
             'simple' => false,
             'published_at' => Carbon::now(),
         ]);
