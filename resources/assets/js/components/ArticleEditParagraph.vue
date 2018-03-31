@@ -36,7 +36,7 @@
         },
 
         mounted() {
-            this.paragraph = this.oldparagraph;
+            this.paragraph = Object.assign({}, this.oldparagraph);
         },
 
         computed: {
@@ -56,8 +56,8 @@
             editParagraph() {
                 this.paragraphEditable = true;
                 this.$nextTick(() => {
-                    this.$refs.input.focus();
                     this.$refs.input.style.height = (this.$refs.input.scrollHeight + 3) + 'px';
+                    this.$refs.input.focus();
                 })
             },
 

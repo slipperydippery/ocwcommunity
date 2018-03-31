@@ -43,7 +43,7 @@
 
         methods: {
         	copyOldBlockquote() {
-	        	this.blockquote = this.oldblockquote;
+	        	this.blockquote = Object.assign({}, this.oldblockquote);
         		// if(this.blockquote.quote == '---'){
         			// this.blockquote.quote = '';
         		// }

@@ -48187,7 +48187,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         };
     },
     mounted: function mounted() {
-        this.paragraph = this.oldparagraph;
+        this.paragraph = Object.assign({}, this.oldparagraph);
     },
 
 
@@ -48208,8 +48208,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             this.paragraphEditable = true;
             this.$nextTick(function () {
-                _this.$refs.input.focus();
                 _this.$refs.input.style.height = _this.$refs.input.scrollHeight + 3 + 'px';
+                _this.$refs.input.focus();
             });
         },
         saveParagraph: function saveParagraph() {
@@ -48606,7 +48606,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     methods: {
         copyOldBlockquote: function copyOldBlockquote() {
-            this.blockquote = this.oldblockquote;
+            this.blockquote = Object.assign({}, this.oldblockquote);
             // if(this.blockquote.quote == '---'){
             // this.blockquote.quote = '';
             // }
