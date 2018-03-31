@@ -10100,12 +10100,32 @@ a.nav-link--main {
   border-bottom: 1px solid;
 }
 
+.articleitem {
+  position: relative;
+}
+
+.articleitem .deleteicon {
+  position: absolute;
+  right: -1rem;
+  top: 0;
+}
+
 .article-tags {
   margin: 0 0 1rem 0;
 }
 
 .article-tags button {
   font-size: .8rem;
+}
+
+.paragraph .paragraph--clean,
+.blockquote .blockquote--clean {
+  border: 1px solid #e9ecef;
+  padding: .8rem;
+}
+
+.blockquote--edit textarea {
+  font-size: 1.25rem;
 }
 
 .forum-post {

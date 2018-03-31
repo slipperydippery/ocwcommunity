@@ -1,9 +1,28 @@
 .article {
 }
 
+.articleitem {
+	position: relative;
+
+	.deleteicon {
+		position: absolute;
+		right: -1rem;
+		top: 0;
+	}
+}
+
 .article-tags {
 	margin: 0 0 1rem 0;
 	button {
 		font-size: .8rem;
 	}
+}
+
+.paragraph .paragraph--clean, .blockquote .blockquote--clean {
+	border: 1px solid $gray-200;
+	padding: .8rem;
+}
+
+.blockquote--edit textarea{
+	font-size: 1.25rem;
 }

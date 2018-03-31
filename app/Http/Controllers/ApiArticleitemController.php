@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Post;
-use App\Comment;
+use App\Articleitem;
 use Illuminate\Http\Request;
 
-class ApiPostCommentController extends Controller
+class ApiArticleitemController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -65,23 +64,12 @@ class ApiPostCommentController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  Post  $post
-     * @param  Comment  $comment
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Post $post, Comment $comment)
+    public function update(Request $request, $id)
     {
-        // if(Auth::user() == $comment->author) {
-        //     abort(403, 'Unauthorized action.');
-        // }
-
-        $this->validate(request(), [
-            'comment' => 'required'
-        ]);
-
-        $comment->body = $request->comment;
-        $comment->save();
-        return $comment;
+        //
     }
 
     /**
@@ -90,8 +78,9 @@ class ApiPostCommentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Articleitem $articleitem)
     {
-        //
+        $articleitem->delete();
+        return 'its done...';
     }
 }

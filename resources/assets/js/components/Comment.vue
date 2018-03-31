@@ -4,7 +4,10 @@
 			{{ paragraph }}
 		</p>
 		<div class="form-group">
-			<textarea class="form-control" rows="5" v-if="edit" v-model="editcomment"></textarea>
+			<textarea class="form-control" :class=" { 'is-invalid': errors.hasOwnProperty('comment') } " rows="5" v-if="edit" v-model="editcomment"></textarea>
+            <span class="invalid-feedback" v-if="errors.hasOwnProperty('comment')">
+                <strong> Input is verplicht. </strong>
+            </span>
 		</div>
 		<div v-if="edit">
 			<button class="btn btn-primary form-control" @click="saveEdit"> Sla wijzigingen op </button> 
@@ -24,6 +27,7 @@
             return {
             	edit: false,
             	editcomment: '',
+                errors: []
             }
         },
 
@@ -36,6 +40,7 @@
         },
 
         methods: {
+
         	textBoi(input) {
         		var paragraphs = [];
         		input.split("\n").forEach(function(text){
@@ -63,7 +68,13 @@
         			this.comment.body = this.editcomment;
         			this.edit = false;
         		})
-        		.catch( e => this.errors.push( e ))
+        		.catch( e => {
+                    if(e.response.data.exception){
+                        this.errors = e.response.data.exception;
+                    } else if (e.response.data.errors){
+                        this.errors = e.response.data.errors; 
+                    }
+                })
         	}
         }
     }

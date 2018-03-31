@@ -3,10 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Article;
+use Carbon\Carbon;
+use App\Articleitem;
+use App\Paragraph;
 use Illuminate\Http\Request;
 
 class ArticleController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth', ['except' => ['index', 'show']]);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +21,8 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        //
+        $articles = Article::with('author')->get();
+        return view('article.index', compact('articles'));
     }
 
     /**
@@ -24,7 +32,24 @@ class ArticleController extends Controller
      */
     public function create()
     {
-        //
+        $article = Article::create([
+            'title' => '',
+            'simple' => false,
+            'published_at' => Carbon::now(),
+        ]);
+
+        $paragraph = Paragraph::create([
+            'body' => 'lorum first paragraph',
+        ]);
+
+        $articleitem = Articleitem::create([
+            'order' => 1,
+            'article_id' => $article->id,
+            'articleitemable_id' => $paragraph->id,
+            'articleitemable_type' => 'App\\Paragraph'
+        ]);
+
+        return redirect()->route('article.edit', $article);
     }
 
     /**
@@ -35,7 +60,18 @@ class ArticleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate(request(), [
+            'title' => 'required|min:3|max:140',
+            'body' => 'required|min:10'
+        ]);
+
+        $article = Article::create([
+            'title' => $request->title,
+            'body' => $request->body,
+            'user_id' => Auth::user()->id,
+        ]);
+
+        return redirect()->route('article.show', $article);
     }
 
     /**
@@ -46,7 +82,7 @@ class ArticleController extends Controller
      */
     public function show(Article $article)
     {
-        //
+        return view ('article.show', compact($article));
     }
 
     /**
@@ -57,7 +93,8 @@ class ArticleController extends Controller
      */
     public function edit(Article $article)
     {
-        //
+        $article = Article::with('articleitems.articleitemable')->find($article->id);
+        return view ('article.edit', compact('article'));
     }
 
     /**

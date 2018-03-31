@@ -87,8 +87,11 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        $tagcategories = Tagcategory::with('tags')->get();
-        return view('post.edit', compact('post', 'tagcategories'));
+        if(Auth::user() == $post->author) {
+            $tagcategories = Tagcategory::with('tags')->get();
+            return view('post.edit', compact('post', 'tagcategories'));
+        }
+        return back();
     }
 
     /**
@@ -100,7 +103,9 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
-        // return $request;
+        if(Auth::user() != $post->author){
+            return redirect('/');
+        }
 
         $this->validate(request(), [
             'title' => 'required|min:3|max:140',

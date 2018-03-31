@@ -13,8 +13,17 @@ Vue.component('example-component', require('./components/ExampleComponent.vue'))
 Vue.component('comment', require('./components/Comment.vue'));
 Vue.component('toggle-comment', require('./components/ToggleComment.vue'));
 
+Vue.component('article-edit-group', require('./components/ArticleEditGroup.vue'));
+Vue.component('article-edit-title', require('./components/ArticleEditTitle.vue'));
+Vue.component('article-edit-item', require('./components/ArticleEditItem.vue'));
+Vue.component('article-edit-paragraph', require('./components/ArticleEditParagraph.vue'));
+Vue.component('article-edit-blockquote', require('./components/ArticleEditBlockquote.vue'));
+
 window.Event = new Vue();
 const app = new Vue({
-    el: '#app'
+    el: '#app',
+
+    methods: {
+    }
 });
 

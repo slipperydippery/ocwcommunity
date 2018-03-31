@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Post;
-use App\Comment;
+use App\Article;
+use App\Paragraph;
+use App\Articleitem;
 use Illuminate\Http\Request;
 
-class ApiPostCommentController extends Controller
+class ApiArticleParagraphController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -34,9 +35,21 @@ class ApiPostCommentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Article $article, Request $request)
     {
-        //
+        $paragraph = Paragraph::create([
+            'body' => $request->paragraph
+        ]);
+
+        $articleitem = Articleitem::create([
+            'order' => $request->order,
+            'article_id' => $article->id,
+            'articleitemable_id' => $paragraph->id,
+            'articleitemable_type' => 'App\\Paragraph'
+        ]);
+
+        $articleitem = Articleitem::with('articleitemable')->find($articleitem->id);
+        return $articleitem;
     }
 
     /**
@@ -65,23 +78,12 @@ class ApiPostCommentController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  Post  $post
-     * @param  Comment  $comment
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Post $post, Comment $comment)
+    public function update(Request $request, $id)
     {
-        // if(Auth::user() == $comment->author) {
-        //     abort(403, 'Unauthorized action.');
-        // }
-
-        $this->validate(request(), [
-            'comment' => 'required'
-        ]);
-
-        $comment->body = $request->comment;
-        $comment->save();
-        return $comment;
+        //
     }
 
     /**
