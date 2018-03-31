@@ -9,12 +9,16 @@
             <textarea 
                 v-if="blockquoteEditable"
                 class="form-control" 
+                :class=" { 'is-invalid': errors.hasOwnProperty('quote') } "
                 v-model="blockquote.quote" 
                 oninput='this.style.height = "";this.style.height = (this.scrollHeight + 3) + "px"'
                 ref="input"
                 placeholder="Schijf hier je citaat" 
             >
             </textarea>
+            <span class="invalid-feedback" v-if="errors.hasOwnProperty('quote')">
+                <strong> Ik kan niet niets opslaan!  (Je mag me wel verwijderen - zie rechter marge) </strong>
+            </span>
             <button class="btn btn-primary" @click="saveBlockquote">Sla wijzigingen op</button>
             <button class="btn btn-outline-secondary" @click="cancelEdit">Verwerp wijzigingen</button>
         </div>
@@ -30,7 +34,8 @@
         data() {
             return {
                 'blockquoteEditable': false,
-            	'blockquote': {quote: ''}
+            	'blockquote': {quote: ''},
+            	'errors': []
             }
         },
 
@@ -44,9 +49,6 @@
         methods: {
         	copyOldBlockquote() {
 	        	this.blockquote = Object.assign({}, this.oldblockquote);
-        		// if(this.blockquote.quote == '---'){
-        			// this.blockquote.quote = '';
-        		// }
         	},
 
             editBlockquote() {
@@ -64,6 +66,13 @@
                 .then(response => {
                     console.log(response)
                     this.blockquoteEditable = false;
+                })
+                .catch( e => {
+                    if(e.response.data.exception){
+                        this.errors = e.response.data.exception;
+                    } else if (e.response.data.errors){
+                        this.errors = e.response.data.errors; 
+                    }
                 })
             },
 

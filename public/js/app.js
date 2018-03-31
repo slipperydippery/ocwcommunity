@@ -48175,6 +48175,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -48183,7 +48187,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     data: function data() {
         return {
             'paragraphEditable': false,
-            'paragraph': { body: '' }
+            'paragraph': { body: '' },
+            'errors': []
         };
     },
     mounted: function mounted() {
@@ -48220,6 +48225,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }).then(function (response) {
                 console.log(response);
                 _this2.paragraphEditable = false;
+            }).catch(function (e) {
+                if (e.response.data.exception) {
+                    _this2.errors = e.response.data.exception;
+                } else if (e.response.data.errors) {
+                    _this2.errors = e.response.data.errors;
+                }
             });
         },
         cancelEdit: function cancelEdit() {
@@ -48266,6 +48277,7 @@ var render = function() {
                 ],
                 ref: "input",
                 staticClass: "form-control",
+                class: { "is-invalid": _vm.errors.hasOwnProperty("body") },
                 attrs: {
                   oninput:
                     'this.style.height = "";this.style.height = (this.scrollHeight + 3) + "px"'
@@ -48280,6 +48292,16 @@ var render = function() {
                   }
                 }
               })
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.errors.hasOwnProperty("body")
+            ? _c("span", { staticClass: "invalid-feedback" }, [
+                _c("strong", [
+                  _vm._v(
+                    " Ik kan niet niets opslaan!  (Je mag me wel verwijderen - zie rechter marge) "
+                  )
+                ])
+              ])
             : _vm._e(),
           _vm._v(" "),
           _c(
@@ -48587,6 +48609,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ['oldblockquote'],
@@ -48594,7 +48620,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     data: function data() {
         return {
             'blockquoteEditable': false,
-            'blockquote': { quote: '' }
+            'blockquote': { quote: '' },
+            'errors': []
         };
     },
     mounted: function mounted() {
@@ -48607,9 +48634,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     methods: {
         copyOldBlockquote: function copyOldBlockquote() {
             this.blockquote = Object.assign({}, this.oldblockquote);
-            // if(this.blockquote.quote == '---'){
-            // this.blockquote.quote = '';
-            // }
         },
         editBlockquote: function editBlockquote() {
             var _this = this;
@@ -48628,6 +48652,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }).then(function (response) {
                 console.log(response);
                 _this2.blockquoteEditable = false;
+            }).catch(function (e) {
+                if (e.response.data.exception) {
+                    _this2.errors = e.response.data.exception;
+                } else if (e.response.data.errors) {
+                    _this2.errors = e.response.data.errors;
+                }
             });
         },
         cancelEdit: function cancelEdit() {
@@ -48677,6 +48707,7 @@ var render = function() {
                 ],
                 ref: "input",
                 staticClass: "form-control",
+                class: { "is-invalid": _vm.errors.hasOwnProperty("quote") },
                 attrs: {
                   oninput:
                     'this.style.height = "";this.style.height = (this.scrollHeight + 3) + "px"',
@@ -48692,6 +48723,16 @@ var render = function() {
                   }
                 }
               })
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.errors.hasOwnProperty("quote")
+            ? _c("span", { staticClass: "invalid-feedback" }, [
+                _c("strong", [
+                  _vm._v(
+                    " Ik kan niet niets opslaan!  (Je mag me wel verwijderen - zie rechter marge) "
+                  )
+                ])
+              ])
             : _vm._e(),
           _vm._v(" "),
           _c(

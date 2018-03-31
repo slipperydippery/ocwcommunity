@@ -8,12 +8,16 @@
         <div class="paragraph--edit form-group" v-if=" paragraphEditable ">
             <textarea 
                 v-if="paragraphEditable"
-                class="form-control" 
+                class="form-control"
+                :class=" { 'is-invalid': errors.hasOwnProperty('body') } "
                 v-model="paragraph.body" 
                 oninput='this.style.height = "";this.style.height = (this.scrollHeight + 3) + "px"'
                 ref="input"
             >
             </textarea>
+            <span class="invalid-feedback" v-if="errors.hasOwnProperty('body')">
+                <strong> Ik kan niet niets opslaan!  (Je mag me wel verwijderen - zie rechter marge) </strong>
+            </span>
             <button class="btn btn-primary" @click="saveParagraph">Sla wijzigingen op</button>
             <button class="btn btn-outline-secondary" @click="cancelEdit">Verwerp wijzigingen</button>
         </div>
@@ -31,7 +35,8 @@
         data() {
             return {
                 'paragraphEditable': false,
-                'paragraph': {body: ''}
+                'paragraph': {body: ''},
+                'errors': []
             }
         },
 
@@ -68,6 +73,13 @@
                 .then(response => {
                     console.log(response)
                     this.paragraphEditable = false;
+                })
+                .catch( e => {
+                    if(e.response.data.exception){
+                        this.errors = e.response.data.exception;
+                    } else if (e.response.data.errors){
+                        this.errors = e.response.data.errors; 
+                    }
                 })
             },
 
