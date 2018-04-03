@@ -7,9 +7,22 @@
         > 
             <img src="/img/trash.svg" alt=""> 
         </a>
+        <a href="#"
+            class="upicon"
+            @click.prevent="moveUp"
+        >
+            moveup
+        </a>
+        <a href="#"
+            class="upicon"
+            @click.prevent="moveDown"
+        >
+            movedown
+        </a>
+
 
         <article-edit-paragraph
-            v-if="articleitem.articleitemable_type.includes('Paragraph')"
+            v-if="isParagraph"
             :oldparagraph="articleitem.articleitemable"
         >
         </article-edit-paragraph>
@@ -60,10 +73,10 @@
         },
 
         computed: {
-        	articleIsParagraph() {
-        		if(true){
+        	isParagraph() {
+        		if(this.articleitem.articleitemable_type.includes('Paragraph')){
         			return true;
-        		}
+        		} 
         		return false;
         	}
         },
@@ -71,6 +84,16 @@
         methods: {
             deleteThis() {
                 this.$emit('deleteItem', this.articleitem);
+            },
+
+            moveUp() {
+                console.log(this.articleitem.order);
+                this.$emit('moveUp', this.articleitem);
+            },
+
+            moveDown() {
+                console.log(this.articleitem.order);
+                this.$emit('moveDown', this.articleitem);
             }
         }
     }

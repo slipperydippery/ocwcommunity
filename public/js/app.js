@@ -47730,6 +47730,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ['article'],
@@ -47751,7 +47753,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var _this = this;
 
             axios.post('/api/article/' + this.article.id + '/paragraph/store', {
-                paragraph: '---',
+                paragraph: '',
                 order: this.article.articleitems.length + 1
             }).then(function (response) {
                 _this.articleitems.push(response.data);
@@ -47767,15 +47769,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 _this2.articleitems.push(response.data);
             });
         },
-        updateArticle: function updateArticle() {
-            console.log('updating article');
-            axios.post('/api/article/' + this.article.id + '/update', {
-                title: this.article.title,
-                body: this.article.body
-            }).then(function (response) {
-                console.log('article updated');
-            }).catch(function (e) {});
-        },
         getArticle: function getArticle() {
             axios.get('/api/article/' + this.article.id).then(function (response) {
                 console.log(response.data);
@@ -47787,6 +47780,24 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             axios.get('/api/articleitem/' + articleitem.id + '/delete').then(function (response) {
                 _this3.articleitems.splice(_this3.articleitems.indexOf(articleitem), 1);
             });
+        },
+        moveUp: function moveUp(articleitem) {
+            var oldorder = articleitem.order;
+            if (oldorder > 1) {
+                Vue.set(this.articleitems, oldorder - 1, this.articleitems[oldorder - 2]);
+                Vue.set(this.articleitems, oldorder - 2, articleitem);
+                this.articleitems[oldorder - 2].order--;
+                this.articleitems[oldorder - 1].order++;
+            }
+        },
+        moveDown: function moveDown(articleitem) {
+            var oldorder = articleitem.order;
+            if (oldorder < this.articleitems.length) {
+                Vue.set(this.articleitems, oldorder - 1, this.articleitems[oldorder]);
+                Vue.set(this.articleitems, oldorder, articleitem);
+                this.articleitems[oldorder].order++;
+                this.articleitems[oldorder - 1].order--;
+            }
         }
     }
 });
@@ -47804,7 +47815,7 @@ var render = function() {
     {},
     [
       _c("article-edit-title", {
-        attrs: { article: _vm.article },
+        attrs: { oldarticle: _vm.article },
         on: {
           articleUpdated: function($event) {
             _vm.updateArticle()
@@ -47816,7 +47827,11 @@ var render = function() {
         return _c("article-edit-item", {
           key: articleitem.id,
           attrs: { articleitem: articleitem },
-          on: { deleteItem: _vm.deleteItem }
+          on: {
+            deleteItem: _vm.deleteItem,
+            moveUp: _vm.moveUp,
+            moveDown: _vm.moveDown
+          }
         })
       }),
       _vm._v(" "),
@@ -47944,6 +47959,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -47956,8 +47984,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
     computed: {
-        articleIsParagraph: function articleIsParagraph() {
-            if (true) {
+        isParagraph: function isParagraph() {
+            if (this.articleitem.articleitemable_type.includes('Paragraph')) {
                 return true;
             }
             return false;
@@ -47967,6 +47995,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     methods: {
         deleteThis: function deleteThis() {
             this.$emit('deleteItem', this.articleitem);
+        },
+        moveUp: function moveUp() {
+            console.log(this.articleitem.order);
+            this.$emit('moveUp', this.articleitem);
+        },
+        moveDown: function moveDown() {
+            console.log(this.articleitem.order);
+            this.$emit('moveDown', this.articleitem);
         }
     }
 });
@@ -47996,7 +48032,37 @@ var render = function() {
         [_c("img", { attrs: { src: "/img/trash.svg", alt: "" } })]
       ),
       _vm._v(" "),
-      _vm.articleitem.articleitemable_type.includes("Paragraph")
+      _c(
+        "a",
+        {
+          staticClass: "upicon",
+          attrs: { href: "#" },
+          on: {
+            click: function($event) {
+              $event.preventDefault()
+              return _vm.moveUp($event)
+            }
+          }
+        },
+        [_vm._v("\n            moveup\n        ")]
+      ),
+      _vm._v(" "),
+      _c(
+        "a",
+        {
+          staticClass: "upicon",
+          attrs: { href: "#" },
+          on: {
+            click: function($event) {
+              $event.preventDefault()
+              return _vm.moveDown($event)
+            }
+          }
+        },
+        [_vm._v("\n            movedown\n        ")]
+      ),
+      _vm._v(" "),
+      _vm.isParagraph
         ? _c("article-edit-paragraph", {
             attrs: { oldparagraph: _vm.articleitem.articleitemable }
           })
@@ -48200,13 +48266,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     methods: {
         textBoi: function textBoi(input) {
-            var paragraphs = [];
-            input.split("\n").forEach(function (text) {
-                if (text.trim()) {
-                    paragraphs.push(text);
-                }
-            });
-            return paragraphs;
+            if (input) {
+                var paragraphs = [];
+                input.split("\n").forEach(function (text) {
+                    if (text.trim()) {
+                        paragraphs.push(text);
+                    }
+                });
+                return paragraphs;
+            }
         },
         editParagraph: function editParagraph() {
             var _this = this;
@@ -48421,39 +48489,85 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['article'],
+    props: ['oldarticle'],
 
     data: function data() {
         return {
             'titleEditable': false,
-            'title': ''
+            'article': { title: '', short: '' },
+            'errors': []
         };
     },
     mounted: function mounted() {
-        this.title = this.article.title;
+        this.article = Object.assign({}, this.oldarticle);
     },
 
 
     computed: {},
 
     methods: {
+        textBoi: function textBoi(input) {
+            if (input) {
+                var paragraphs = [];
+                input.split("\n").forEach(function (text) {
+                    if (text.trim()) {
+                        paragraphs.push(text);
+                    }
+                });
+                return paragraphs;
+            }
+        },
         editTitle: function editTitle() {
             var _this = this;
 
             this.titleEditable = true;
             this.$nextTick(function () {
-                return _this.$refs.input.focus();
+                return _this.$refs.titleinput.focus();
+            });
+            this.$nextTick(function () {
+                return _this.$refs.input.style.height = _this.$refs.input.scrollHeight + 3 + 'px';
             });
         },
         saveTitle: function saveTitle() {
-            this.titleEditable = false;
-            this.article.title = this.title;
-            this.$emit('articleUpdated');
+            var _this2 = this;
+
+            axios.post('/api/article/' + this.article.id + '/update', {
+                title: this.article.title,
+                short: this.article.short,
+                body: this.article.body
+            }).then(function (response) {
+                _this2.titleEditable = false;
+            }).catch(function (e) {
+                console.log(e.response.data);
+                if (e.response.data.exception) {
+                    _this2.errors = e.response.data.exception;
+                } else if (e.response.data.errors) {
+                    _this2.errors = e.response.data.errors;
+                }
+            });
         },
         cancelEdit: function cancelEdit() {
-            this.title = this.article.title;
+            this.article = Object.assign({}, this.oldarticle);
             this.titleEditable = false;
         }
     }
@@ -48469,38 +48583,100 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "titlebox" }, [
     !_vm.titleEditable
-      ? _c("div", { staticClass: "titlebox--clean" }, [
-          _c("h1", { on: { click: _vm.editTitle } }, [
-            _vm._v(" " + _vm._s(_vm.title) + " ")
-          ])
-        ])
+      ? _c(
+          "div",
+          {
+            staticClass: "titlebox--clean form-group",
+            on: { click: _vm.editTitle }
+          },
+          [
+            _c("h1", [_vm._v(" " + _vm._s(_vm.article.title) + " ")]),
+            _vm._v(" "),
+            _vm._l(_vm.textBoi(_vm.article.short), function(thisparagraph) {
+              return _c("p", { staticClass: "lead" }, [
+                _vm._v(
+                  "\n                " +
+                    _vm._s(thisparagraph) +
+                    "\n            "
+                )
+              ])
+            })
+          ],
+          2
+        )
       : _vm._e(),
     _vm._v(" "),
     _vm.titleEditable
       ? _c("div", { staticClass: "titlebox--edit" }, [
-          _c("h1", [
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.title,
-                  expression: "title"
-                }
-              ],
-              ref: "input",
-              attrs: { type: "text" },
-              domProps: { value: _vm.title },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
-                  }
-                  _vm.title = $event.target.value
-                }
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.article.title,
+                expression: "article.title"
               }
-            })
-          ]),
+            ],
+            ref: "titleinput",
+            staticClass: "form-control",
+            class: { "is-invalid": _vm.errors.hasOwnProperty("title") },
+            attrs: { type: "text" },
+            domProps: { value: _vm.article.title },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.article, "title", $event.target.value)
+              }
+            }
+          }),
+          _vm._v(" "),
+          _vm.errors.hasOwnProperty("title")
+            ? _c("span", { staticClass: "invalid-feedback" }, [
+                _c("strong", [
+                  _vm._v(" De titel moet tussen de 3 en 255 tekens zijn.")
+                ])
+              ])
+            : _vm._e(),
+          _vm._v(" "),
+          _c("textarea", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.article.short,
+                expression: "article.short"
+              }
+            ],
+            ref: "input",
+            staticClass: "form-control",
+            class: { "is-invalid": _vm.errors.hasOwnProperty("short") },
+            attrs: {
+              oninput:
+                'this.style.height = "";this.style.height = (this.scrollHeight + 3) + "px"',
+              placeholder: "Hier kan een lead tekst, maar dat hoeft niet."
+            },
+            domProps: { value: _vm.article.short },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.article, "short", $event.target.value)
+              }
+            }
+          }),
+          _vm._v(" "),
+          _vm.errors.hasOwnProperty("short")
+            ? _c("span", { staticClass: "invalid-feedback" }, [
+                _c("strong", [
+                  _vm._v(
+                    " Ik kan niet niets opslaan!  (Je mag me wel verwijderen - zie rechter marge) "
+                  )
+                ])
+              ])
+            : _vm._e(),
           _vm._v(" "),
           _c(
             "button",
@@ -48508,7 +48684,7 @@ var render = function() {
               staticClass: "btn btn-primary btn-small",
               on: { click: _vm.saveTitle }
             },
-            [_vm._v("\n\t\t\tsla op\n\t\t")]
+            [_vm._v("\n\t\t\t\tsla op\n\t\t\t")]
           ),
           _vm._v(" "),
           _c(
@@ -48517,7 +48693,7 @@ var render = function() {
               staticClass: "btn btn-outline-secondary btn-small",
               on: { click: _vm.cancelEdit }
             },
-            [_vm._v("\n\t\t\tAnnuleer\n\t\t")]
+            [_vm._v("\n\t\t\t\tAnnuleer\n\t\t\t")]
           )
         ])
       : _vm._e()

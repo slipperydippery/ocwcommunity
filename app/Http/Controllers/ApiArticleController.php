@@ -70,10 +70,11 @@ class ApiArticleController extends Controller
     public function update(Request $request, Article $article)
     {
         $this->validate(request(), [
-            'title' => 'required|min:3|max:140'
+            'title' => 'required|min:3|max:255'
         ]);
 
         $article->title = $request->title;
+        $article->short = $request->short;
         $article->save();
 
         return $article;

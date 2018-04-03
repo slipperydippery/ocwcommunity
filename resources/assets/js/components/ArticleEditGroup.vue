@@ -1,7 +1,7 @@
     <template>
 	<div class="">
 		<article-edit-title
-            :article="article"
+            :oldarticle="article"
             @articleUpdated="updateArticle()"
         >
         </article-edit-title>
@@ -10,6 +10,8 @@
 			:articleitem="articleitem"
 			:key="articleitem.id"
             @deleteItem="deleteItem"
+            @moveUp="moveUp"
+            @moveDown="moveDown"
 		>
 		</article-edit-item>
         <button class="btn btn-primary" @click="addParagraph"> Voeg een paragraaf toe</button>
@@ -39,7 +41,7 @@
         methods: {
         	addParagraph() {
         		axios.post('/api/article/' + this.article.id + '/paragraph/store', {
-                    paragraph: '---',
+                    paragraph: '',
                     order: ( this.article.articleitems.length + 1 ),
                 })
                 .then(response => {
@@ -57,20 +59,6 @@
                 })
             },
 
-            updateArticle() {
-                console.log('updating article');
-                axios.post('/api/article/' + this.article.id + '/update', {
-                    title: this.article.title,
-                    body: this.article.body
-                })
-                .then(response => {
-                    console.log('article updated');
-                })
-                .catch(e => {
-
-                });
-            },
-
             getArticle() {
                 axios.get('/api/article/' + this.article.id)
                     .then(response => {
@@ -83,7 +71,28 @@
                     .then(response => {
                         this.articleitems.splice(this.articleitems.indexOf(articleitem), 1);
                     });
+            },
+
+            moveUp(articleitem) {
+                var oldorder = articleitem.order;
+                if(oldorder > 1){
+                    Vue.set(this.articleitems, oldorder - 1, this.articleitems[oldorder - 2]);
+                    Vue.set(this.articleitems, oldorder - 2, articleitem);
+                    this.articleitems[oldorder - 2].order --;
+                    this.articleitems[oldorder - 1].order ++;
+                }
+            },
+
+            moveDown(articleitem) {
+                var oldorder = articleitem.order;
+                if(oldorder < this.articleitems.length){
+                    Vue.set(this.articleitems, oldorder - 1, this.articleitems[oldorder]);
+                    Vue.set(this.articleitems, oldorder, articleitem);
+                    this.articleitems[oldorder].order ++;
+                    this.articleitems[oldorder - 1].order --;
+                }
             }
+
         }
     }
 </script>

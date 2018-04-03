@@ -49,13 +49,15 @@
 
         methods: {
             textBoi(input) {
-                var paragraphs = [];
-                input.split("\n").forEach(function(text){
-                    if(text.trim()){
-                        paragraphs.push(text);
-                    }
-                })
-                return paragraphs;
+                if(input){
+                    var paragraphs = [];
+                    input.split("\n").forEach(function(text){
+                        if(text.trim()){
+                            paragraphs.push(text);
+                        }
+                    })
+                    return paragraphs;
+                }
             },
 
             editParagraph() {

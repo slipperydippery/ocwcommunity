@@ -40,7 +40,6 @@
         },
 
         methods: {
-
         	textBoi(input) {
         		var paragraphs = [];
         		input.split("\n").forEach(function(text){

@@ -38,17 +38,6 @@ class ArticleController extends Controller
             'published_at' => Carbon::now(),
         ]);
 
-        $paragraph = Paragraph::create([
-            'body' => 'lorum first paragraph',
-        ]);
-
-        $articleitem = Articleitem::create([
-            'order' => 1,
-            'article_id' => $article->id,
-            'articleitemable_id' => $paragraph->id,
-            'articleitemable_type' => 'App\\Paragraph'
-        ]);
-
         return redirect()->route('article.edit', $article);
     }
 
