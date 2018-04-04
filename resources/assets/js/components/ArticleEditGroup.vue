@@ -33,6 +33,7 @@
 
         mounted() {
             this.articleitems = this.article.articleitems;
+            this.sortArticleitems();
         },
 
         computed: {
@@ -40,9 +41,10 @@
 
         methods: {
         	addParagraph() {
+                this.sortArticleitems();
         		axios.post('/api/article/' + this.article.id + '/paragraph/store', {
                     paragraph: '',
-                    order: ( this.article.articleitems.length + 1 ),
+                    order: ( this.article.articleitems.length ),
                 })
                 .then(response => {
                     this.articleitems.push(response.data);
@@ -50,9 +52,10 @@
         	},
 
             addBlockquote() {
+                this.sortArticleitems();
                 axios.post('/api/article/' + this.article.id + '/blockquote/store', {
                     blockquote: '---',
-                    order: (this.article.articleitems.length + 1),
+                    order: (this.article.articleitems.length),
                 })
                 .then(response => {
                     this.articleitems.push(response.data);
@@ -74,23 +77,50 @@
             },
 
             moveUp(articleitem) {
-                var oldorder = articleitem.order;
-                if(oldorder > 1){
-                    Vue.set(this.articleitems, oldorder - 1, this.articleitems[oldorder - 2]);
-                    Vue.set(this.articleitems, oldorder - 2, articleitem);
-                    this.articleitems[oldorder - 2].order --;
-                    this.articleitems[oldorder - 1].order ++;
+                //find articleitem in array
+                var thisIndex = this.articleitems.indexOf(articleitem);
+                var oldOrder = this.articleitems[thisIndex].order
+                if(thisIndex > 0){
+                    //switch items.order
+                    this.articleitems[thisIndex].order = this.articleitems[thisIndex - 1].order;
+                    this.articleitems[thisIndex - 1].order = oldOrder;
+                    //send the data to the DB
+                    this.updateArticleitem(this.articleitems[thisIndex]);
+                    this.updateArticleitem(this.articleitems[thisIndex - 1]);
+                    //sort the items
+                    this.sortArticleitems();
                 }
             },
 
             moveDown(articleitem) {
-                var oldorder = articleitem.order;
-                if(oldorder < this.articleitems.length){
-                    Vue.set(this.articleitems, oldorder - 1, this.articleitems[oldorder]);
-                    Vue.set(this.articleitems, oldorder, articleitem);
-                    this.articleitems[oldorder].order ++;
-                    this.articleitems[oldorder - 1].order --;
+                var thisIndex = this.articleitems.indexOf(articleitem);
+                var oldOrder = articleitem.order;
+                if(thisIndex < (this.articleitems.length - 1)){
+                    this.articleitems[thisIndex].order = this.articleitems[thisIndex + 1].order;
+                    this.articleitems[thisIndex + 1 ].order = oldOrder;
+                    this.updateArticleitem(this.articleitems[thisIndex]);
+                    this.updateArticleitem(this.articleitems[thisIndex + 1]);
+                    this.sortArticleitems();
                 }
+            },
+
+            updateArticleitem(articleitem) {
+                axios.post('/api/articleitem/' + articleitem.id + '/update', {
+                    articleitem: articleitem,
+                })
+                .then(response => {
+
+                })
+            },
+
+            sortArticleitems() {
+                this.articleitems.sort(function(a, b){
+                    return a.order - b.order;
+                });
+                this.articleitems.forEach(articleitem => {
+                    console.log(this.articleitems.indexOf(articleitem));
+                    articleitem.order = this.articleitems.indexOf(articleitem);
+                })
             }
 
         }

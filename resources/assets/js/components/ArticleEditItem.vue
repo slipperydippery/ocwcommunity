@@ -87,12 +87,10 @@
             },
 
             moveUp() {
-                console.log(this.articleitem.order);
                 this.$emit('moveUp', this.articleitem);
             },
 
             moveDown() {
-                console.log(this.articleitem.order);
                 this.$emit('moveDown', this.articleitem);
             }
         }

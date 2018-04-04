@@ -47743,6 +47743,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     mounted: function mounted() {
         this.articleitems = this.article.articleitems;
+        this.sortArticleitems();
     },
 
 
@@ -47752,9 +47753,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         addParagraph: function addParagraph() {
             var _this = this;
 
+            this.sortArticleitems();
             axios.post('/api/article/' + this.article.id + '/paragraph/store', {
                 paragraph: '',
-                order: this.article.articleitems.length + 1
+                order: this.article.articleitems.length
             }).then(function (response) {
                 _this.articleitems.push(response.data);
             });
@@ -47762,9 +47764,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         addBlockquote: function addBlockquote() {
             var _this2 = this;
 
+            this.sortArticleitems();
             axios.post('/api/article/' + this.article.id + '/blockquote/store', {
                 blockquote: '---',
-                order: this.article.articleitems.length + 1
+                order: this.article.articleitems.length
             }).then(function (response) {
                 _this2.articleitems.push(response.data);
             });
@@ -47782,22 +47785,46 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
         },
         moveUp: function moveUp(articleitem) {
-            var oldorder = articleitem.order;
-            if (oldorder > 1) {
-                Vue.set(this.articleitems, oldorder - 1, this.articleitems[oldorder - 2]);
-                Vue.set(this.articleitems, oldorder - 2, articleitem);
-                this.articleitems[oldorder - 2].order--;
-                this.articleitems[oldorder - 1].order++;
+            //find articleitem in array
+            var thisIndex = this.articleitems.indexOf(articleitem);
+            var oldOrder = this.articleitems[thisIndex].order;
+            if (thisIndex > 0) {
+                //switch items.order
+                this.articleitems[thisIndex].order = this.articleitems[thisIndex - 1].order;
+                this.articleitems[thisIndex - 1].order = oldOrder;
+                //send the data to the DB
+                this.updateArticleitem(this.articleitems[thisIndex]);
+                this.updateArticleitem(this.articleitems[thisIndex - 1]);
+                //sort the items
+                this.sortArticleitems();
             }
         },
         moveDown: function moveDown(articleitem) {
-            var oldorder = articleitem.order;
-            if (oldorder < this.articleitems.length) {
-                Vue.set(this.articleitems, oldorder - 1, this.articleitems[oldorder]);
-                Vue.set(this.articleitems, oldorder, articleitem);
-                this.articleitems[oldorder].order++;
-                this.articleitems[oldorder - 1].order--;
+            var thisIndex = this.articleitems.indexOf(articleitem);
+            var oldOrder = articleitem.order;
+            if (thisIndex < this.articleitems.length - 1) {
+                this.articleitems[thisIndex].order = this.articleitems[thisIndex + 1].order;
+                this.articleitems[thisIndex + 1].order = oldOrder;
+                this.updateArticleitem(this.articleitems[thisIndex]);
+                this.updateArticleitem(this.articleitems[thisIndex + 1]);
+                this.sortArticleitems();
             }
+        },
+        updateArticleitem: function updateArticleitem(articleitem) {
+            axios.post('/api/articleitem/' + articleitem.id + '/update', {
+                articleitem: articleitem
+            }).then(function (response) {});
+        },
+        sortArticleitems: function sortArticleitems() {
+            var _this4 = this;
+
+            this.articleitems.sort(function (a, b) {
+                return a.order - b.order;
+            });
+            this.articleitems.forEach(function (articleitem) {
+                console.log(_this4.articleitems.indexOf(articleitem));
+                articleitem.order = _this4.articleitems.indexOf(articleitem);
+            });
         }
     }
 });
@@ -47997,11 +48024,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.$emit('deleteItem', this.articleitem);
         },
         moveUp: function moveUp() {
-            console.log(this.articleitem.order);
             this.$emit('moveUp', this.articleitem);
         },
         moveDown: function moveDown() {
-            console.log(this.articleitem.order);
             this.$emit('moveDown', this.articleitem);
         }
     }

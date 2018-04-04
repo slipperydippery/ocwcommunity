@@ -35,5 +35,6 @@ Route::post('/api/article/{article}/update', 'ApiArticleController@update');
 Route::post('/api/article/{article}/paragraph/store', 'ApiArticleParagraphController@store');
 Route::post('/api/article/{article}/blockquote/store', 'ApiArticleBlockquoteController@store');
 Route::get('/api/articleitem/{articleitem}/delete', 'ApiArticleitemController@destroy');
+Route::post('/api/articleitem/{articleitem}/update', 'ApiArticleitemController@update');
 Route::post('/api/paragraph/{paragraph}/update', 'ApiParagraphController@update');
 Route::post('/api/blockquote/{blockquote}/update', 'ApiBlockquoteController@update');
