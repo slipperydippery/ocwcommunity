@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use Auth;
 use App\Article;
-use Carbon\Carbon;
-use App\Articleitem;
 use App\Paragraph;
+use Carbon\Carbon;
+use App\Permission;
+use App\Articleitem;
+use App\Contributor;
 use Illuminate\Http\Request;
 
 class ArticleController extends Controller
@@ -38,6 +41,15 @@ class ArticleController extends Controller
             'published_at' => Carbon::now(),
         ]);
 
+        $order = $article->contributors->count();
+
+        $contributor = Contributor::create([
+            'user_id' => Auth::user()->id,
+            'article_id' => $article->id,
+            'permission_id' => Permission::where('name', 'author')->first()->id,
+            'order' => $order,
+        ]);
+
         return redirect()->route('article.edit', $article);
     }
 
@@ -57,8 +69,15 @@ class ArticleController extends Controller
         $article = Article::create([
             'title' => $request->title,
             'body' => $request->body,
-            'user_id' => Auth::user()->id,
         ]);
+
+        $contributor = Contributor::create([
+            'user_id' => Auth::user()->id,
+            'article_id' => $article->id,
+            'permission_id' => Permission::where('role', 'author')->first()->id,
+        ]);
+        $contributor->save();
+        return $contributor;
 
         return redirect()->route('article.show', $article);
     }

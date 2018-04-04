@@ -1,7 +1,7 @@
 <template>
 	<div class="paragraph">
         <div class="paragraph--clean" v-if=" ! paragraphEditable " @click="editParagraph">
-            <p v-for="thisparagraph in textBoi(paragraph.body)">
+            <p v-for="thisparagraph in textBoi(workParagraph.body)">
                 {{ thisparagraph }}
             </p>
         </div>
@@ -10,7 +10,7 @@
                 v-if="paragraphEditable"
                 class="form-control"
                 :class=" { 'is-invalid': errors.hasOwnProperty('body') } "
-                v-model="paragraph.body" 
+                v-model="workParagraph.body" 
                 oninput='this.style.height = "";this.style.height = (this.scrollHeight + 3) + "px"'
                 ref="input"
             >
@@ -29,20 +29,22 @@
 
     export default {
         props: [
-            'baseparagraph'
+            'initParagraph'
         ],
 
         data() {
             return {
                 'paragraphEditable': false,
-                'paragraph': {body: ''},
+                'baseParagraph': {body: ''},
+                'workParagraph': {body: ''},
                 'errors': []
             }
         },
 
         mounted() {
-            this.paragraph = Object.assign({}, this.baseparagraph);
-            if(this.baseparagraph.editable){
+            this.workParagraph = Object.assign({}, this.initParagraph);
+            this.baseParagraph = Object.assign({}, this.initParagraph);
+            if(this.initParagraph.editable){
                 this.editParagraph();
             }
         },
@@ -72,10 +74,11 @@
             },
 
             saveParagraph() {
-                axios.post('/api/paragraph/' + this.paragraph.id + '/update', {
-                    body: this.paragraph.body
+                axios.post('/api/paragraph/' + this.workParagraph.id + '/update', {
+                    body: this.workParagraph.body,
                 })
                 .then(response => {
+                    this.baseParagraph = Object.assign({}, this.workParagraph); 
                     this.paragraphEditable = false;
                 })
                 .catch( e => {
@@ -88,7 +91,7 @@
             },
 
             cancelEdit() {
-                this.paragraph = this.baseparagraph;
+                this.workParagraph = Object.assign({}, this.baseParagraph);
                 this.paragraphEditable = false;
             }
 

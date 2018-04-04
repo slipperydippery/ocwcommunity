@@ -2,7 +2,7 @@
 	<div class="blockquote">
         <div class="blockquote--clean" v-if=" ! blockquoteEditable " @click="editBlockquote">
             <blockquote class="blockquote">
-            	<p class="mb-0"> {{ blockquote.quote }} </p>
+            	<p class="mb-0"> {{ workBlockquote.quote }} </p>
             </blockquote>
         </div>
         <div class="blockquote--edit form-group" v-if=" blockquoteEditable ">
@@ -10,7 +10,7 @@
                 v-if="blockquoteEditable"
                 class="form-control" 
                 :class=" { 'is-invalid': errors.hasOwnProperty('quote') } "
-                v-model="blockquote.quote" 
+                v-model="workBlockquote.quote" 
                 oninput='this.style.height = "";this.style.height = (this.scrollHeight + 3) + "px"'
                 ref="input"
                 placeholder="Schijf hier je citaat" 
@@ -28,20 +28,22 @@
 <script>
     export default {
         props: [
-	        'baseblockquote'
+	        'initBlockquote'
         ],
 
         data() {
             return {
                 'blockquoteEditable': false,
-            	'blockquote': {quote: ''},
+                'baseBlockquote': {quote: ''},
+            	'workBlockquote': {quote: ''},
             	'errors': []
             }
         },
 
         mounted() {
-        	this.copyBaseBlockquote();
-            if(this.baseblockquote.editable){
+            this.baseBlockquote = Object.assign({}, this.initBlockquote);
+        	this.workBlockquote = Object.assign({}, this.initBlockquote);
+            if(this.initBlockquote.editable){
                 this.editBlockquote();
             }
         },
@@ -50,10 +52,6 @@
         },
 
         methods: {
-        	copyBaseBlockquote() {
-	        	this.blockquote = Object.assign({}, this.baseblockquote);
-        	},
-
             editBlockquote() {
                 this.blockquoteEditable = true;
                 this.$nextTick(() => {
@@ -63,10 +61,11 @@
             },
 
             saveBlockquote() {
-                axios.post('/api/blockquote/' + this.blockquote.id + '/update', {
-                    quote: this.blockquote.quote
+                axios.post('/api/blockquote/' + this.workBlockquote.id + '/update', {
+                    quote: this.workBlockquote.quote
                 })
                 .then(response => {
+                    this.baseBlockquote = Object.assign({}, this.workBlockquote); 
                     this.blockquoteEditable = false;
                 })
                 .catch( e => {
@@ -79,7 +78,7 @@
             },
 
             cancelEdit() {
-                this.copyBaseBlockquote();
+                this.workBlockquote = Object.assign({}, this.baseBlockquote);
                 this.blockquoteEditable = false;
             }
         }

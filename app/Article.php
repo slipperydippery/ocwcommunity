@@ -8,10 +8,10 @@ class Article extends Model
 {
 	protected $guarded = [];
 
-	public function author()
-	{
-		return $this->belongsTo(User::class, 'user_id');
-	}
+    public function contributors()
+    {
+        return $this->hasMany(Contributor::class);
+    }
 
     public function tags()
     {

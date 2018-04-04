@@ -48083,13 +48083,13 @@ var render = function() {
       _vm._v(" "),
       _vm.isParagraph
         ? _c("article-edit-paragraph", {
-            attrs: { baseparagraph: _vm.articleitem.articleitemable }
+            attrs: { initParagraph: _vm.articleitem.articleitemable }
           })
         : _vm._e(),
       _vm._v(" "),
       _vm.articleitem.articleitemable_type.includes("Blockquote")
         ? _c("article-edit-blockquote", {
-            attrs: { baseblockquote: _vm.articleitem.articleitemable }
+            attrs: { initBlockquote: _vm.articleitem.articleitemable }
           })
         : _vm._e(),
       _vm._v(" "),
@@ -48267,18 +48267,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['baseparagraph'],
+    props: ['initParagraph'],
 
     data: function data() {
         return {
             'paragraphEditable': false,
-            'paragraph': { body: '' },
+            'baseParagraph': { body: '' },
+            'workParagraph': { body: '' },
             'errors': []
         };
     },
     mounted: function mounted() {
-        this.paragraph = Object.assign({}, this.baseparagraph);
-        if (this.baseparagraph.editable) {
+        this.workParagraph = Object.assign({}, this.initParagraph);
+        this.baseParagraph = Object.assign({}, this.initParagraph);
+        if (this.initParagraph.editable) {
             this.editParagraph();
         }
     },
@@ -48310,9 +48312,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         saveParagraph: function saveParagraph() {
             var _this2 = this;
 
-            axios.post('/api/paragraph/' + this.paragraph.id + '/update', {
-                body: this.paragraph.body
+            axios.post('/api/paragraph/' + this.workParagraph.id + '/update', {
+                body: this.workParagraph.body
             }).then(function (response) {
+                _this2.baseParagraph = Object.assign({}, _this2.workParagraph);
                 _this2.paragraphEditable = false;
             }).catch(function (e) {
                 if (e.response.data.exception) {
@@ -48323,7 +48326,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
         },
         cancelEdit: function cancelEdit() {
-            this.paragraph = this.baseparagraph;
+            this.workParagraph = Object.assign({}, this.baseParagraph);
             this.paragraphEditable = false;
         }
     }
@@ -48342,7 +48345,7 @@ var render = function() {
       ? _c(
           "div",
           { staticClass: "paragraph--clean", on: { click: _vm.editParagraph } },
-          _vm._l(_vm.textBoi(_vm.paragraph.body), function(thisparagraph) {
+          _vm._l(_vm.textBoi(_vm.workParagraph.body), function(thisparagraph) {
             return _c("p", [
               _vm._v(
                 "\n                " + _vm._s(thisparagraph) + "\n            "
@@ -48360,8 +48363,8 @@ var render = function() {
                   {
                     name: "model",
                     rawName: "v-model",
-                    value: _vm.paragraph.body,
-                    expression: "paragraph.body"
+                    value: _vm.workParagraph.body,
+                    expression: "workParagraph.body"
                   }
                 ],
                 ref: "input",
@@ -48371,13 +48374,13 @@ var render = function() {
                   oninput:
                     'this.style.height = "";this.style.height = (this.scrollHeight + 3) + "px"'
                 },
-                domProps: { value: _vm.paragraph.body },
+                domProps: { value: _vm.workParagraph.body },
                 on: {
                   input: function($event) {
                     if ($event.target.composing) {
                       return
                     }
-                    _vm.$set(_vm.paragraph, "body", $event.target.value)
+                    _vm.$set(_vm.workParagraph, "body", $event.target.value)
                   }
                 }
               })
@@ -48812,18 +48815,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['baseblockquote'],
+    props: ['initBlockquote'],
 
     data: function data() {
         return {
             'blockquoteEditable': false,
-            'blockquote': { quote: '' },
+            'baseBlockquote': { quote: '' },
+            'workBlockquote': { quote: '' },
             'errors': []
         };
     },
     mounted: function mounted() {
-        this.copyBaseBlockquote();
-        if (this.baseblockquote.editable) {
+        this.baseBlockquote = Object.assign({}, this.initBlockquote);
+        this.workBlockquote = Object.assign({}, this.initBlockquote);
+        if (this.initBlockquote.editable) {
             this.editBlockquote();
         }
     },
@@ -48832,9 +48837,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     computed: {},
 
     methods: {
-        copyBaseBlockquote: function copyBaseBlockquote() {
-            this.blockquote = Object.assign({}, this.baseblockquote);
-        },
         editBlockquote: function editBlockquote() {
             var _this = this;
 
@@ -48847,9 +48849,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         saveBlockquote: function saveBlockquote() {
             var _this2 = this;
 
-            axios.post('/api/blockquote/' + this.blockquote.id + '/update', {
-                quote: this.blockquote.quote
+            axios.post('/api/blockquote/' + this.workBlockquote.id + '/update', {
+                quote: this.workBlockquote.quote
             }).then(function (response) {
+                _this2.baseBlockquote = Object.assign({}, _this2.workBlockquote);
                 _this2.blockquoteEditable = false;
             }).catch(function (e) {
                 if (e.response.data.exception) {
@@ -48860,7 +48863,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
         },
         cancelEdit: function cancelEdit() {
-            this.copyBaseBlockquote();
+            this.workBlockquote = Object.assign({}, this.baseBlockquote);
             this.blockquoteEditable = false;
         }
     }
@@ -48885,7 +48888,7 @@ var render = function() {
           [
             _c("blockquote", { staticClass: "blockquote" }, [
               _c("p", { staticClass: "mb-0" }, [
-                _vm._v(" " + _vm._s(_vm.blockquote.quote) + " ")
+                _vm._v(" " + _vm._s(_vm.workBlockquote.quote) + " ")
               ])
             ])
           ]
@@ -48900,8 +48903,8 @@ var render = function() {
                   {
                     name: "model",
                     rawName: "v-model",
-                    value: _vm.blockquote.quote,
-                    expression: "blockquote.quote"
+                    value: _vm.workBlockquote.quote,
+                    expression: "workBlockquote.quote"
                   }
                 ],
                 ref: "input",
@@ -48912,13 +48915,13 @@ var render = function() {
                     'this.style.height = "";this.style.height = (this.scrollHeight + 3) + "px"',
                   placeholder: "Schijf hier je citaat"
                 },
-                domProps: { value: _vm.blockquote.quote },
+                domProps: { value: _vm.workBlockquote.quote },
                 on: {
                   input: function($event) {
                     if ($event.target.composing) {
                       return
                     }
-                    _vm.$set(_vm.blockquote, "quote", $event.target.value)
+                    _vm.$set(_vm.workBlockquote, "quote", $event.target.value)
                   }
                 }
               })

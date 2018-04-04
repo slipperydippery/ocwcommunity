@@ -25,6 +25,11 @@
 			</div>
 			<div class="col-md-3">
 				<div class="sidebar">
+					@foreach ($article->contributors as $contributor)
+						{{ $contributor->user->name }} - {{ $contributor->permission->name }}
+					@endforeach
+				</div>
+				<div class="sidebar">
 					<h4>Richtlijnen voor het plaatsen van een bericht</h4>
 					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eligendi, iste iusto? Fugiat commodi tempora accusantium repellendus magnam, architecto, velit. Sit, sed nulla optio numquam aspernatur totam doloribus animi accusamus nam?</p>
 				</div>
