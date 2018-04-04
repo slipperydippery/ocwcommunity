@@ -28,7 +28,7 @@
 <script>
     export default {
         props: [
-	        'oldblockquote'
+	        'baseblockquote'
         ],
 
         data() {
@@ -40,15 +40,18 @@
         },
 
         mounted() {
-        	this.copyOldBlockquote();
+        	this.copyBaseBlockquote();
+            if(this.baseblockquote.editable){
+                this.editBlockquote();
+            }
         },
 
         computed: {
         },
 
         methods: {
-        	copyOldBlockquote() {
-	        	this.blockquote = Object.assign({}, this.oldblockquote);
+        	copyBaseBlockquote() {
+	        	this.blockquote = Object.assign({}, this.baseblockquote);
         	},
 
             editBlockquote() {
@@ -64,7 +67,6 @@
                     quote: this.blockquote.quote
                 })
                 .then(response => {
-                    console.log(response)
                     this.blockquoteEditable = false;
                 })
                 .catch( e => {
@@ -77,7 +79,7 @@
             },
 
             cancelEdit() {
-                this.copyOldBlockquote();
+                this.copyBaseBlockquote();
                 this.blockquoteEditable = false;
             }
         }

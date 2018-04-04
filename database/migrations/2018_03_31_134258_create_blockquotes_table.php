@@ -15,7 +15,7 @@ class CreateBlockquotesTable extends Migration
     {
         Schema::create('blockquotes', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('quote');
+            $table->string('quote')->nullable();
             $table->timestamps();
         });
     }

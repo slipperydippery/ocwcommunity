@@ -47,6 +47,7 @@
                     order: ( this.article.articleitems.length ),
                 })
                 .then(response => {
+                    response.data.articleitemable.editable = true;
                     this.articleitems.push(response.data);
                 })
         	},
@@ -54,10 +55,11 @@
             addBlockquote() {
                 this.sortArticleitems();
                 axios.post('/api/article/' + this.article.id + '/blockquote/store', {
-                    blockquote: '---',
+                    blockquote: '',
                     order: (this.article.articleitems.length),
                 })
                 .then(response => {
+                    response.data.articleitemable.editable = true;
                     this.articleitems.push(response.data);
                 })
             },
@@ -76,30 +78,22 @@
                     });
             },
 
-            moveUp(articleitem) {
-                //find articleitem in array
-                var thisIndex = this.articleitems.indexOf(articleitem);
-                var oldOrder = this.articleitems[thisIndex].order
-                if(thisIndex > 0){
-                    //switch items.order
-                    this.articleitems[thisIndex].order = this.articleitems[thisIndex - 1].order;
-                    this.articleitems[thisIndex - 1].order = oldOrder;
-                    //send the data to the DB
-                    this.updateArticleitem(this.articleitems[thisIndex]);
-                    this.updateArticleitem(this.articleitems[thisIndex - 1]);
-                    //sort the items
+            moveUp(baseItem) {
+                var baseIndex = this.articleitems.indexOf(baseItem);
+                var baseOrder = baseItem.order
+                if(baseIndex > 0){
+                    this.articleitems[baseIndex].order = this.articleitems[baseIndex - 1].order;
+                    this.articleitems[baseIndex - 1].order = baseOrder;
                     this.sortArticleitems();
                 }
             },
 
-            moveDown(articleitem) {
-                var thisIndex = this.articleitems.indexOf(articleitem);
-                var oldOrder = articleitem.order;
-                if(thisIndex < (this.articleitems.length - 1)){
-                    this.articleitems[thisIndex].order = this.articleitems[thisIndex + 1].order;
-                    this.articleitems[thisIndex + 1 ].order = oldOrder;
-                    this.updateArticleitem(this.articleitems[thisIndex]);
-                    this.updateArticleitem(this.articleitems[thisIndex + 1]);
+            moveDown(baseItem) {
+                var baseIndex = this.articleitems.indexOf(baseItem);
+                var baseOrder = baseItem.order;
+                if(baseIndex < (this.articleitems.length - 1)){
+                    this.articleitems[baseIndex].order = this.articleitems[baseIndex + 1].order;
+                    this.articleitems[baseIndex + 1 ].order = baseOrder;
                     this.sortArticleitems();
                 }
             },
@@ -108,9 +102,6 @@
                 axios.post('/api/articleitem/' + articleitem.id + '/update', {
                     articleitem: articleitem,
                 })
-                .then(response => {
-
-                })
             },
 
             sortArticleitems() {
@@ -118,8 +109,8 @@
                     return a.order - b.order;
                 });
                 this.articleitems.forEach(articleitem => {
-                    console.log(this.articleitems.indexOf(articleitem));
                     articleitem.order = this.articleitems.indexOf(articleitem);
+                    this.updateArticleitem(articleitem);
                 })
             }
 

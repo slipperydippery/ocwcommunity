@@ -29,7 +29,7 @@
 
     export default {
         props: [
-            'oldparagraph'
+            'baseparagraph'
         ],
 
         data() {
@@ -41,7 +41,10 @@
         },
 
         mounted() {
-            this.paragraph = Object.assign({}, this.oldparagraph);
+            this.paragraph = Object.assign({}, this.baseparagraph);
+            if(this.baseparagraph.editable){
+                this.editParagraph();
+            }
         },
 
         computed: {
@@ -73,7 +76,6 @@
                     body: this.paragraph.body
                 })
                 .then(response => {
-                    console.log(response)
                     this.paragraphEditable = false;
                 })
                 .catch( e => {
@@ -86,7 +88,7 @@
             },
 
             cancelEdit() {
-                this.paragraph = this.oldparagraph;
+                this.paragraph = this.baseparagraph;
                 this.paragraphEditable = false;
             }
 

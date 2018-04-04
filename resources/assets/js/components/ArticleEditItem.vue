@@ -23,12 +23,12 @@
 
         <article-edit-paragraph
             v-if="isParagraph"
-            :oldparagraph="articleitem.articleitemable"
+            :baseparagraph="articleitem.articleitemable"
         >
         </article-edit-paragraph>
         <article-edit-blockquote
             v-if="articleitem.articleitemable_type.includes('Blockquote')"
-            :oldblockquote="articleitem.articleitemable"
+            :baseblockquote="articleitem.articleitemable"
         >
         </article-edit-blockquote>
 

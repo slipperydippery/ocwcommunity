@@ -47758,6 +47758,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 paragraph: '',
                 order: this.article.articleitems.length
             }).then(function (response) {
+                response.data.articleitemable.editable = true;
                 _this.articleitems.push(response.data);
             });
         },
@@ -47766,9 +47767,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             this.sortArticleitems();
             axios.post('/api/article/' + this.article.id + '/blockquote/store', {
-                blockquote: '---',
+                blockquote: '',
                 order: this.article.articleitems.length
             }).then(function (response) {
+                response.data.articleitemable.editable = true;
                 _this2.articleitems.push(response.data);
             });
         },
@@ -47784,36 +47786,28 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 _this3.articleitems.splice(_this3.articleitems.indexOf(articleitem), 1);
             });
         },
-        moveUp: function moveUp(articleitem) {
-            //find articleitem in array
-            var thisIndex = this.articleitems.indexOf(articleitem);
-            var oldOrder = this.articleitems[thisIndex].order;
-            if (thisIndex > 0) {
-                //switch items.order
-                this.articleitems[thisIndex].order = this.articleitems[thisIndex - 1].order;
-                this.articleitems[thisIndex - 1].order = oldOrder;
-                //send the data to the DB
-                this.updateArticleitem(this.articleitems[thisIndex]);
-                this.updateArticleitem(this.articleitems[thisIndex - 1]);
-                //sort the items
+        moveUp: function moveUp(baseItem) {
+            var baseIndex = this.articleitems.indexOf(baseItem);
+            var baseOrder = baseItem.order;
+            if (baseIndex > 0) {
+                this.articleitems[baseIndex].order = this.articleitems[baseIndex - 1].order;
+                this.articleitems[baseIndex - 1].order = baseOrder;
                 this.sortArticleitems();
             }
         },
-        moveDown: function moveDown(articleitem) {
-            var thisIndex = this.articleitems.indexOf(articleitem);
-            var oldOrder = articleitem.order;
-            if (thisIndex < this.articleitems.length - 1) {
-                this.articleitems[thisIndex].order = this.articleitems[thisIndex + 1].order;
-                this.articleitems[thisIndex + 1].order = oldOrder;
-                this.updateArticleitem(this.articleitems[thisIndex]);
-                this.updateArticleitem(this.articleitems[thisIndex + 1]);
+        moveDown: function moveDown(baseItem) {
+            var baseIndex = this.articleitems.indexOf(baseItem);
+            var baseOrder = baseItem.order;
+            if (baseIndex < this.articleitems.length - 1) {
+                this.articleitems[baseIndex].order = this.articleitems[baseIndex + 1].order;
+                this.articleitems[baseIndex + 1].order = baseOrder;
                 this.sortArticleitems();
             }
         },
         updateArticleitem: function updateArticleitem(articleitem) {
             axios.post('/api/articleitem/' + articleitem.id + '/update', {
                 articleitem: articleitem
-            }).then(function (response) {});
+            });
         },
         sortArticleitems: function sortArticleitems() {
             var _this4 = this;
@@ -47822,8 +47816,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 return a.order - b.order;
             });
             this.articleitems.forEach(function (articleitem) {
-                console.log(_this4.articleitems.indexOf(articleitem));
                 articleitem.order = _this4.articleitems.indexOf(articleitem);
+                _this4.updateArticleitem(articleitem);
             });
         }
     }
@@ -48089,13 +48083,13 @@ var render = function() {
       _vm._v(" "),
       _vm.isParagraph
         ? _c("article-edit-paragraph", {
-            attrs: { oldparagraph: _vm.articleitem.articleitemable }
+            attrs: { baseparagraph: _vm.articleitem.articleitemable }
           })
         : _vm._e(),
       _vm._v(" "),
       _vm.articleitem.articleitemable_type.includes("Blockquote")
         ? _c("article-edit-blockquote", {
-            attrs: { oldblockquote: _vm.articleitem.articleitemable }
+            attrs: { baseblockquote: _vm.articleitem.articleitemable }
           })
         : _vm._e(),
       _vm._v(" "),
@@ -48273,7 +48267,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['oldparagraph'],
+    props: ['baseparagraph'],
 
     data: function data() {
         return {
@@ -48283,7 +48277,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         };
     },
     mounted: function mounted() {
-        this.paragraph = Object.assign({}, this.oldparagraph);
+        this.paragraph = Object.assign({}, this.baseparagraph);
+        if (this.baseparagraph.editable) {
+            this.editParagraph();
+        }
     },
 
 
@@ -48316,7 +48313,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             axios.post('/api/paragraph/' + this.paragraph.id + '/update', {
                 body: this.paragraph.body
             }).then(function (response) {
-                console.log(response);
                 _this2.paragraphEditable = false;
             }).catch(function (e) {
                 if (e.response.data.exception) {
@@ -48327,7 +48323,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
         },
         cancelEdit: function cancelEdit() {
-            this.paragraph = this.oldparagraph;
+            this.paragraph = this.baseparagraph;
             this.paragraphEditable = false;
         }
     }
@@ -48816,7 +48812,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['oldblockquote'],
+    props: ['baseblockquote'],
 
     data: function data() {
         return {
@@ -48826,15 +48822,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         };
     },
     mounted: function mounted() {
-        this.copyOldBlockquote();
+        this.copyBaseBlockquote();
+        if (this.baseblockquote.editable) {
+            this.editBlockquote();
+        }
     },
 
 
     computed: {},
 
     methods: {
-        copyOldBlockquote: function copyOldBlockquote() {
-            this.blockquote = Object.assign({}, this.oldblockquote);
+        copyBaseBlockquote: function copyBaseBlockquote() {
+            this.blockquote = Object.assign({}, this.baseblockquote);
         },
         editBlockquote: function editBlockquote() {
             var _this = this;
@@ -48851,7 +48850,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             axios.post('/api/blockquote/' + this.blockquote.id + '/update', {
                 quote: this.blockquote.quote
             }).then(function (response) {
-                console.log(response);
                 _this2.blockquoteEditable = false;
             }).catch(function (e) {
                 if (e.response.data.exception) {
@@ -48862,7 +48860,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
         },
         cancelEdit: function cancelEdit() {
-            this.copyOldBlockquote();
+            this.copyBaseBlockquote();
             this.blockquoteEditable = false;
         }
     }
