@@ -10141,15 +10141,30 @@ a.nav-link--main {
 .articleitem {
   position: relative;
   margin-bottom: 1rem;
-  min-height: 80px;
 }
 
 .articleitem .articleitem--control {
+  opacity: 0;
   position: absolute;
-  right: -1.5rem;
+  right: -2rem;
   top: 0rem;
   padding: 0.3rem 0.2rem 0;
   background: #e9ecef;
+  -webkit-transition: all .5s;
+  transition: all .5s;
+}
+
+.articleitem:hover .articleitem--control {
+  opacity: 1;
+}
+
+.articleitem .articleitem--clean {
+  border: 1px solid #e9ecef;
+  padding: .8rem;
+}
+
+.articleitem:hover .articleitem--clean {
+  border: 1px solid #ced4da;
 }
 
 .article-tags {
@@ -10161,12 +10176,6 @@ a.nav-link--main {
 }
 
 .articleitem .articleitem--clean {
-  border: 1px solid #e9ecef;
-  padding: .8rem;
-}
-
-.articleitem .articleitem--clean,
-.articleitem .articleitem--edit {
   padding-top: .8rem;
 }
 

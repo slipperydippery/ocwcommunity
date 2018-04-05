@@ -47734,6 +47734,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ['article'],
@@ -47833,6 +47836,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 articleitem.order = _this5.articleitems.indexOf(articleitem);
                 _this5.updateArticleitem(articleitem);
             });
+        },
+        isFirst: function isFirst(articleitem) {
+            if (this.articleitems.indexOf(articleitem) == 0) {
+                return true;
+            }
+            return false;
+        },
+        isLast: function isLast(articleitem) {
+            if (this.articleitems.indexOf(articleitem) == this.articleitems.length - 1) {
+                return true;
+            }
+            return false;
         }
     }
 });
@@ -47858,34 +47873,56 @@ var render = function() {
         }
       }),
       _vm._v(" "),
-      _vm._l(_vm.articleitems, function(articleitem) {
-        return _c("article-edit-item", {
-          key: articleitem.id,
-          attrs: { articleitem: articleitem },
-          on: {
-            deleteItem: _vm.deleteItem,
-            moveUp: _vm.moveUp,
-            moveDown: _vm.moveDown
-          }
-        })
+      _vm._l(_vm.articleitems, function(articleitem, key, index) {
+        return _c(
+          "article-edit-item",
+          {
+            key: articleitem.id,
+            attrs: {
+              articleitem: articleitem,
+              isFirst: _vm.isFirst(articleitem),
+              isLast: _vm.isLast(articleitem)
+            },
+            on: {
+              deleteItem: _vm.deleteItem,
+              moveUp: _vm.moveUp,
+              moveDown: _vm.moveDown
+            }
+          },
+          [_vm._v("\n            " + _vm._s(index) + "\n\t\t")]
+        )
       }),
       _vm._v(" "),
       _c(
         "button",
         { staticClass: "btn btn-primary", on: { click: _vm.addParagraph } },
-        [_vm._v(" Voeg een paragraaf toe")]
+        [
+          _c("i", { staticClass: "material-icons" }, [_vm._v("add")]),
+          _vm._v(" "),
+          _c("i", { staticClass: "material-icons" }, [
+            _vm._v("format_align_justify")
+          ])
+        ]
       ),
       _vm._v(" "),
       _c(
         "button",
         { staticClass: "btn btn-primary", on: { click: _vm.addBlockquote } },
-        [_vm._v(" Voeg een citaat toe")]
+        [
+          _c("i", { staticClass: "material-icons" }, [_vm._v("add")]),
+          _vm._v(" "),
+          _c("i", { staticClass: "material-icons" }, [_vm._v("format_quote")])
+        ]
       ),
       _vm._v(" "),
       _c(
         "button",
         { staticClass: "btn btn-primary", on: { click: _vm.addHeading } },
-        [_vm._v(" Voeg een heading toe")]
+        [
+          _c("i", { staticClass: "material-icons" }, [_vm._v("add")]),
+          _vm._v(" "),
+          _c("i", { staticClass: "material-icons" }, [_vm._v("title")])
+        ]
       )
     ],
     2
@@ -48019,10 +48056,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['articleitem'],
+    props: ['articleitem', 'isFirst', 'isLast'],
 
     data: function data() {
         return {};
@@ -48065,43 +48104,47 @@ var render = function() {
     { staticClass: "articleitem" },
     [
       _c("div", { staticClass: "articleitem--control d-flex flex-column" }, [
-        _c(
-          "a",
-          {
-            staticClass: "upicon",
-            attrs: { href: "#" },
-            on: {
-              click: function($event) {
-                $event.preventDefault()
-                return _vm.moveUp($event)
-              }
-            }
-          },
-          [
-            _c("i", { staticClass: "material-icons md-18 md-inactive" }, [
-              _vm._v("keyboard_arrow_up")
-            ])
-          ]
-        ),
+        !_vm.isFirst
+          ? _c(
+              "a",
+              {
+                staticClass: "upicon",
+                attrs: { href: "#" },
+                on: {
+                  click: function($event) {
+                    $event.preventDefault()
+                    return _vm.moveUp($event)
+                  }
+                }
+              },
+              [
+                _c("i", { staticClass: "material-icons md-18 md-inactive" }, [
+                  _vm._v("keyboard_arrow_up")
+                ])
+              ]
+            )
+          : _vm._e(),
         _vm._v(" "),
-        _c(
-          "a",
-          {
-            staticClass: "upicon",
-            attrs: { href: "#" },
-            on: {
-              click: function($event) {
-                $event.preventDefault()
-                return _vm.moveDown($event)
-              }
-            }
-          },
-          [
-            _c("i", { staticClass: "material-icons md-18 md-inactive" }, [
-              _vm._v("keyboard_arrow_down")
-            ])
-          ]
-        ),
+        !_vm.isLast
+          ? _c(
+              "a",
+              {
+                staticClass: "upicon",
+                attrs: { href: "#" },
+                on: {
+                  click: function($event) {
+                    $event.preventDefault()
+                    return _vm.moveDown($event)
+                  }
+                }
+              },
+              [
+                _c("i", { staticClass: "material-icons md-18 md-inactive" }, [
+                  _vm._v("keyboard_arrow_down")
+                ])
+              ]
+            )
+          : _vm._e(),
         _vm._v(" "),
         _c(
           "a",

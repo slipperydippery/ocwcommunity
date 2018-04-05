@@ -4,12 +4,14 @@
             <a href="#"
                 class="upicon"
                 @click.prevent="moveUp"
+                v-if="! isFirst"
             >
                 <i class="material-icons md-18 md-inactive">keyboard_arrow_up</i>
             </a>
             <a href="#"
                 class="upicon"
                 @click.prevent="moveDown"
+                v-if="! isLast"
             >
                 <i class="material-icons md-18 md-inactive">keyboard_arrow_down</i>
             </a>
@@ -67,7 +69,9 @@
 
     export default {
         props: [
-        	'articleitem'
+        	'articleitem',
+            'isFirst',
+            'isLast'
         ],
 
         data() {

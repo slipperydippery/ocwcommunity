@@ -6,17 +6,20 @@
         >
         </article-edit-title>
 		<article-edit-item
-			v-for="articleitem in articleitems"	
+			v-for="(articleitem, key, index) in articleitems"	
 			:articleitem="articleitem"
 			:key="articleitem.id"
+            :isFirst="isFirst(articleitem)"
+            :isLast="isLast(articleitem)"
             @deleteItem="deleteItem"
             @moveUp="moveUp"
             @moveDown="moveDown"
 		>
+            {{ index }}
 		</article-edit-item>
-        <button class="btn btn-primary" @click="addParagraph"> Voeg een paragraaf toe</button>
-        <button class="btn btn-primary" @click="addBlockquote"> Voeg een citaat toe</button>
-		<button class="btn btn-primary" @click="addHeading"> Voeg een heading toe</button>
+        <button class="btn btn-primary" @click="addParagraph"> <i class="material-icons">add</i> <i class="material-icons">format_align_justify</i> </button>
+        <button class="btn btn-primary" @click="addBlockquote"> <i class="material-icons">add</i> <i class="material-icons">format_quote</i> </button>
+		<button class="btn btn-primary" @click="addHeading"> <i class="material-icons">add</i> <i class="material-icons">title</i></button>
 	</div>
 </template>
 
@@ -125,8 +128,21 @@
                     articleitem.order = this.articleitems.indexOf(articleitem);
                     this.updateArticleitem(articleitem);
                 })
-            }
+            },
 
+            isFirst(articleitem) {
+                if(this.articleitems.indexOf(articleitem) == 0) {
+                    return true;
+                }
+                return false;
+            },
+
+            isLast(articleitem) {
+                if(this.articleitems.indexOf(articleitem) == (this.articleitems.length - 1)){
+                    return true;
+                }
+                return false;
+            },
         }
     }
 </script>
