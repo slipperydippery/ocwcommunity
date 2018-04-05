@@ -18,6 +18,7 @@ Vue.component('article-edit-title', require('./components/ArticleEditTitle.vue')
 Vue.component('article-edit-item', require('./components/ArticleEditItem.vue'));
 Vue.component('article-edit-paragraph', require('./components/ArticleEditParagraph.vue'));
 Vue.component('article-edit-blockquote', require('./components/ArticleEditBlockquote.vue'));
+Vue.component('article-edit-heading', require('./components/ArticleEditHeading.vue'));
 
 window.Event = new Vue();
 const app = new Vue({

@@ -1,11 +1,11 @@
 <template>
 	<div class="paragraph">
-        <div class="paragraph--clean" v-if=" ! paragraphEditable " @click="editParagraph">
+        <div class="articleitem--clean" v-if=" ! paragraphEditable " @click="editParagraph">
             <p v-for="thisparagraph in textBoi(workParagraph.body)">
                 {{ thisparagraph }}
             </p>
         </div>
-        <div class="paragraph--edit form-group" v-if=" paragraphEditable ">
+        <div class="articleitem--edit form-group" v-if=" paragraphEditable ">
             <textarea 
                 v-if="paragraphEditable"
                 class="form-control"
@@ -42,8 +42,8 @@
         },
 
         mounted() {
-            this.workParagraph = Object.assign({}, this.initParagraph);
             this.baseParagraph = Object.assign({}, this.initParagraph);
+            this.workParagraph = Object.assign({}, this.initParagraph);
             if(this.initParagraph.editable){
                 this.editParagraph();
             }

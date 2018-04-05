@@ -1,25 +1,26 @@
 <template>
 	<div class="articleitem">
-        <a href="#" 
-            data-toggle="modal" 
-            :data-target="'#confirmDeleteModal-' + articleitem.id"
-            class="deleteicon"
-        > 
-            <img src="/img/trash.svg" alt=""> 
-        </a>
-        <a href="#"
-            class="upicon"
-            @click.prevent="moveUp"
-        >
-            moveup
-        </a>
-        <a href="#"
-            class="upicon"
-            @click.prevent="moveDown"
-        >
-            movedown
-        </a>
-
+        <div class="articleitem--control d-flex flex-column">
+            <a href="#"
+                class="upicon"
+                @click.prevent="moveUp"
+            >
+                <i class="material-icons md-18 md-inactive">keyboard_arrow_up</i>
+            </a>
+            <a href="#"
+                class="upicon"
+                @click.prevent="moveDown"
+            >
+                <i class="material-icons md-18 md-inactive">keyboard_arrow_down</i>
+            </a>
+            <a href="#" 
+                data-toggle="modal" 
+                :data-target="'#confirmDeleteModal-' + articleitem.id"
+                class="deleteicon"
+            > 
+                <i class="material-icons md-18 md-inactive">delete</i>
+            </a>
+        </div>
 
         <article-edit-paragraph
             v-if="isParagraph"
@@ -31,6 +32,11 @@
             :initBlockquote="articleitem.articleitemable"
         >
         </article-edit-blockquote>
+        <article-edit-heading
+            v-if="articleitem.articleitemable_type.includes('Heading')"
+            :initHeading="articleitem.articleitemable"
+        >
+        </article-edit-heading>
 
         <!-- Modal -->
         <div class="modal fade" :id="'confirmDeleteModal-' + articleitem.id" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

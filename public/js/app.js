@@ -533,6 +533,7 @@ Vue.component('article-edit-title', __webpack_require__(63));
 Vue.component('article-edit-item', __webpack_require__(52));
 Vue.component('article-edit-paragraph', __webpack_require__(55));
 Vue.component('article-edit-blockquote', __webpack_require__(66));
+Vue.component('article-edit-heading', __webpack_require__(69));
 
 window.Event = new Vue();
 var app = new Vue({
@@ -47732,6 +47733,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ['article'],
@@ -47774,16 +47776,28 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 _this2.articleitems.push(response.data);
             });
         },
+        addHeading: function addHeading() {
+            var _this3 = this;
+
+            this.sortArticleitems();
+            axios.post('/api/article/' + this.article.id + '/heading/store', {
+                heading: '',
+                order: this.article.articleitems.length
+            }).then(function (response) {
+                response.data.articleitemable.editable = true;
+                _this3.articleitems.push(response.data);
+            });
+        },
         getArticle: function getArticle() {
             axios.get('/api/article/' + this.article.id).then(function (response) {
                 console.log(response.data);
             });
         },
         deleteItem: function deleteItem(articleitem) {
-            var _this3 = this;
+            var _this4 = this;
 
             axios.get('/api/articleitem/' + articleitem.id + '/delete').then(function (response) {
-                _this3.articleitems.splice(_this3.articleitems.indexOf(articleitem), 1);
+                _this4.articleitems.splice(_this4.articleitems.indexOf(articleitem), 1);
             });
         },
         moveUp: function moveUp(baseItem) {
@@ -47810,14 +47824,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
         },
         sortArticleitems: function sortArticleitems() {
-            var _this4 = this;
+            var _this5 = this;
 
             this.articleitems.sort(function (a, b) {
                 return a.order - b.order;
             });
             this.articleitems.forEach(function (articleitem) {
-                articleitem.order = _this4.articleitems.indexOf(articleitem);
-                _this4.updateArticleitem(articleitem);
+                articleitem.order = _this5.articleitems.indexOf(articleitem);
+                _this5.updateArticleitem(articleitem);
             });
         }
     }
@@ -47866,6 +47880,12 @@ var render = function() {
         "button",
         { staticClass: "btn btn-primary", on: { click: _vm.addBlockquote } },
         [_vm._v(" Voeg een citaat toe")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        { staticClass: "btn btn-primary", on: { click: _vm.addHeading } },
+        [_vm._v(" Voeg een heading toe")]
       )
     ],
     2
@@ -47993,6 +48013,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -48038,48 +48064,62 @@ var render = function() {
     "div",
     { staticClass: "articleitem" },
     [
-      _c(
-        "a",
-        {
-          staticClass: "deleteicon",
-          attrs: {
-            href: "#",
-            "data-toggle": "modal",
-            "data-target": "#confirmDeleteModal-" + _vm.articleitem.id
-          }
-        },
-        [_c("img", { attrs: { src: "/img/trash.svg", alt: "" } })]
-      ),
-      _vm._v(" "),
-      _c(
-        "a",
-        {
-          staticClass: "upicon",
-          attrs: { href: "#" },
-          on: {
-            click: function($event) {
-              $event.preventDefault()
-              return _vm.moveUp($event)
+      _c("div", { staticClass: "articleitem--control d-flex flex-column" }, [
+        _c(
+          "a",
+          {
+            staticClass: "upicon",
+            attrs: { href: "#" },
+            on: {
+              click: function($event) {
+                $event.preventDefault()
+                return _vm.moveUp($event)
+              }
             }
-          }
-        },
-        [_vm._v("\n            moveup\n        ")]
-      ),
-      _vm._v(" "),
-      _c(
-        "a",
-        {
-          staticClass: "upicon",
-          attrs: { href: "#" },
-          on: {
-            click: function($event) {
-              $event.preventDefault()
-              return _vm.moveDown($event)
+          },
+          [
+            _c("i", { staticClass: "material-icons md-18 md-inactive" }, [
+              _vm._v("keyboard_arrow_up")
+            ])
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "a",
+          {
+            staticClass: "upicon",
+            attrs: { href: "#" },
+            on: {
+              click: function($event) {
+                $event.preventDefault()
+                return _vm.moveDown($event)
+              }
             }
-          }
-        },
-        [_vm._v("\n            movedown\n        ")]
-      ),
+          },
+          [
+            _c("i", { staticClass: "material-icons md-18 md-inactive" }, [
+              _vm._v("keyboard_arrow_down")
+            ])
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "a",
+          {
+            staticClass: "deleteicon",
+            attrs: {
+              href: "#",
+              "data-toggle": "modal",
+              "data-target": "#confirmDeleteModal-" + _vm.articleitem.id
+            }
+          },
+          [
+            _c("i", { staticClass: "material-icons md-18 md-inactive" }, [
+              _vm._v("delete")
+            ])
+          ]
+        )
+      ]),
       _vm._v(" "),
       _vm.isParagraph
         ? _c("article-edit-paragraph", {
@@ -48090,6 +48130,12 @@ var render = function() {
       _vm.articleitem.articleitemable_type.includes("Blockquote")
         ? _c("article-edit-blockquote", {
             attrs: { initBlockquote: _vm.articleitem.articleitemable }
+          })
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.articleitem.articleitemable_type.includes("Heading")
+        ? _c("article-edit-heading", {
+            attrs: { initHeading: _vm.articleitem.articleitemable }
           })
         : _vm._e(),
       _vm._v(" "),
@@ -48278,8 +48324,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         };
     },
     mounted: function mounted() {
-        this.workParagraph = Object.assign({}, this.initParagraph);
         this.baseParagraph = Object.assign({}, this.initParagraph);
+        this.workParagraph = Object.assign({}, this.initParagraph);
         if (this.initParagraph.editable) {
             this.editParagraph();
         }
@@ -48344,7 +48390,10 @@ var render = function() {
     !_vm.paragraphEditable
       ? _c(
           "div",
-          { staticClass: "paragraph--clean", on: { click: _vm.editParagraph } },
+          {
+            staticClass: "articleitem--clean",
+            on: { click: _vm.editParagraph }
+          },
           _vm._l(_vm.textBoi(_vm.workParagraph.body), function(thisparagraph) {
             return _c("p", [
               _vm._v(
@@ -48356,7 +48405,7 @@ var render = function() {
       : _vm._e(),
     _vm._v(" "),
     _vm.paragraphEditable
-      ? _c("div", { staticClass: "paragraph--edit form-group" }, [
+      ? _c("div", { staticClass: "articleitem--edit form-group" }, [
           _vm.paragraphEditable
             ? _c("textarea", {
                 directives: [
@@ -48531,6 +48580,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ['oldarticle'],
@@ -48605,122 +48656,124 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "titlebox" }, [
-    !_vm.titleEditable
-      ? _c(
-          "div",
-          {
-            staticClass: "titlebox--clean form-group",
-            on: { click: _vm.editTitle }
-          },
-          [
-            _c("h1", [_vm._v(" " + _vm._s(_vm.article.title) + " ")]),
-            _vm._v(" "),
-            _vm._l(_vm.textBoi(_vm.article.short), function(thisparagraph) {
-              return _c("p", { staticClass: "lead" }, [
-                _vm._v(
-                  "\n                " +
-                    _vm._s(thisparagraph) +
-                    "\n            "
-                )
-              ])
-            })
-          ],
-          2
-        )
-      : _vm._e(),
-    _vm._v(" "),
-    _vm.titleEditable
-      ? _c("div", { staticClass: "titlebox--edit" }, [
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.article.title,
-                expression: "article.title"
-              }
-            ],
-            ref: "titleinput",
-            staticClass: "form-control",
-            class: { "is-invalid": _vm.errors.hasOwnProperty("title") },
-            attrs: { type: "text" },
-            domProps: { value: _vm.article.title },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.$set(_vm.article, "title", $event.target.value)
-              }
-            }
-          }),
-          _vm._v(" "),
-          _vm.errors.hasOwnProperty("title")
-            ? _c("span", { staticClass: "invalid-feedback" }, [
-                _c("strong", [
-                  _vm._v(" De titel moet tussen de 3 en 255 tekens zijn.")
-                ])
-              ])
-            : _vm._e(),
-          _vm._v(" "),
-          _c("textarea", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.article.short,
-                expression: "article.short"
-              }
-            ],
-            ref: "input",
-            staticClass: "form-control",
-            class: { "is-invalid": _vm.errors.hasOwnProperty("short") },
-            attrs: {
-              oninput:
-                'this.style.height = "";this.style.height = (this.scrollHeight + 3) + "px"',
-              placeholder: "Hier kan een lead tekst, maar dat hoeft niet."
+  return _c("div", { staticClass: "articleitem" }, [
+    _c("div", { staticClass: "titlebox" }, [
+      !_vm.titleEditable
+        ? _c(
+            "div",
+            {
+              staticClass: "articleitem--clean form-group",
+              on: { click: _vm.editTitle }
             },
-            domProps: { value: _vm.article.short },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.$set(_vm.article, "short", $event.target.value)
-              }
-            }
-          }),
-          _vm._v(" "),
-          _vm.errors.hasOwnProperty("short")
-            ? _c("span", { staticClass: "invalid-feedback" }, [
-                _c("strong", [
+            [
+              _c("h1", [_vm._v(" " + _vm._s(_vm.article.title) + " ")]),
+              _vm._v(" "),
+              _vm._l(_vm.textBoi(_vm.article.short), function(thisparagraph) {
+                return _c("p", { staticClass: "lead" }, [
                   _vm._v(
-                    " Ik kan niet niets opslaan!  (Je mag me wel verwijderen - zie rechter marge) "
+                    "\n                " +
+                      _vm._s(thisparagraph) +
+                      "\n            "
                   )
                 ])
-              ])
-            : _vm._e(),
-          _vm._v(" "),
-          _c(
-            "button",
-            {
-              staticClass: "btn btn-primary btn-small",
-              on: { click: _vm.saveTitle }
-            },
-            [_vm._v("\n\t\t\t\tsla op\n\t\t\t")]
-          ),
-          _vm._v(" "),
-          _c(
-            "button",
-            {
-              staticClass: "btn btn-outline-secondary btn-small",
-              on: { click: _vm.cancelEdit }
-            },
-            [_vm._v("\n\t\t\t\tAnnuleer\n\t\t\t")]
+              })
+            ],
+            2
           )
-        ])
-      : _vm._e()
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.titleEditable
+        ? _c("div", { staticClass: "articleitem--edit" }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.article.title,
+                  expression: "article.title"
+                }
+              ],
+              ref: "titleinput",
+              staticClass: "form-control",
+              class: { "is-invalid": _vm.errors.hasOwnProperty("title") },
+              attrs: { type: "text" },
+              domProps: { value: _vm.article.title },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.article, "title", $event.target.value)
+                }
+              }
+            }),
+            _vm._v(" "),
+            _vm.errors.hasOwnProperty("title")
+              ? _c("span", { staticClass: "invalid-feedback" }, [
+                  _c("strong", [
+                    _vm._v(" De titel moet tussen de 3 en 255 tekens zijn.")
+                  ])
+                ])
+              : _vm._e(),
+            _vm._v(" "),
+            _c("textarea", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.article.short,
+                  expression: "article.short"
+                }
+              ],
+              ref: "input",
+              staticClass: "form-control",
+              class: { "is-invalid": _vm.errors.hasOwnProperty("short") },
+              attrs: {
+                oninput:
+                  'this.style.height = "";this.style.height = (this.scrollHeight + 3) + "px"',
+                placeholder: "Hier kan een lead tekst, maar dat hoeft niet."
+              },
+              domProps: { value: _vm.article.short },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.article, "short", $event.target.value)
+                }
+              }
+            }),
+            _vm._v(" "),
+            _vm.errors.hasOwnProperty("short")
+              ? _c("span", { staticClass: "invalid-feedback" }, [
+                  _c("strong", [
+                    _vm._v(
+                      " Ik kan niet niets opslaan!  (Je mag me wel verwijderen - zie rechter marge) "
+                    )
+                  ])
+                ])
+              : _vm._e(),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-primary btn-small",
+                on: { click: _vm.saveTitle }
+              },
+              [_vm._v("\n\t\t\t\tsla op\n\t\t\t")]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-outline-secondary btn-small",
+                on: { click: _vm.cancelEdit }
+              },
+              [_vm._v("\n\t\t\t\tAnnuleer\n\t\t\t")]
+            )
+          ])
+        : _vm._e()
+    ])
   ])
 }
 var staticRenderFns = []
@@ -48882,7 +48935,7 @@ var render = function() {
       ? _c(
           "div",
           {
-            staticClass: "blockquote--clean",
+            staticClass: "articleitem--clean",
             on: { click: _vm.editBlockquote }
           },
           [
@@ -48896,7 +48949,7 @@ var render = function() {
       : _vm._e(),
     _vm._v(" "),
     _vm.blockquoteEditable
-      ? _c("div", { staticClass: "blockquote--edit form-group" }, [
+      ? _c("div", { staticClass: "articleitem--edit form-group" }, [
           _vm.blockquoteEditable
             ? _c("textarea", {
                 directives: [
@@ -48965,6 +49018,237 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
     require("vue-hot-reload-api")      .rerender("data-v-8e8c7830", module.exports)
+  }
+}
+
+/***/ }),
+/* 69 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(1)
+/* script */
+var __vue_script__ = __webpack_require__(70)
+/* template */
+var __vue_template__ = __webpack_require__(71)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\components\\ArticleEditHeading.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-8a934f0e", Component.options)
+  } else {
+    hotAPI.reload("data-v-8a934f0e", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 70 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: ['initHeading'],
+
+    data: function data() {
+        return {
+            'headingEditable': false,
+            'baseHeading': { heading: '' },
+            'workHeading': { heading: '' },
+            'errors': []
+        };
+    },
+    mounted: function mounted() {
+        this.baseHeading = Object.assign({}, this.initHeading);
+        this.workHeading = Object.assign({}, this.initHeading);
+        if (this.initHeading.editable) {
+            this.editHeading();
+        }
+    },
+
+
+    computed: {},
+
+    methods: {
+        editHeading: function editHeading() {
+            var _this = this;
+
+            this.headingEditable = true;
+            this.$nextTick(function () {
+                _this.$refs.input.focus();
+                _this.$refs.input.style.height = _this.$refs.input.scrollHeight + 3 + 'px';
+            });
+        },
+        saveHeading: function saveHeading() {
+            var _this2 = this;
+
+            axios.post('/api/heading/' + this.workHeading.id + '/update', {
+                heading: this.workHeading.heading
+            }).then(function (response) {
+                _this2.baseHeading = Object.assign({}, _this2.workHeading);
+                _this2.headingEditable = false;
+            }).catch(function (e) {
+                if (e.response.data.exception) {
+                    _this2.errors = e.response.data.exception;
+                } else if (e.response.data.errors) {
+                    _this2.errors = e.response.data.errors;
+                }
+            });
+        },
+        cancelEdit: function cancelEdit() {
+            this.workHeading = Object.assign({}, this.baseHeading);
+            this.headingEditable = false;
+        }
+    }
+});
+
+/***/ }),
+/* 71 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "heading" }, [
+    !_vm.headingEditable
+      ? _c(
+          "div",
+          { staticClass: "articleitem--clean", on: { click: _vm.editHeading } },
+          [
+            _c("h4", { staticClass: "heading" }, [
+              _vm._v(
+                "\n            \t" +
+                  _vm._s(_vm.workHeading.heading) +
+                  "\n            "
+              )
+            ])
+          ]
+        )
+      : _vm._e(),
+    _vm._v(" "),
+    _vm.headingEditable
+      ? _c("div", { staticClass: "articleitem--edit form-group" }, [
+          _vm.headingEditable
+            ? _c("textarea", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.workHeading.heading,
+                    expression: "workHeading.heading"
+                  }
+                ],
+                ref: "input",
+                staticClass: "form-control",
+                class: { "is-invalid": _vm.errors.hasOwnProperty("heading") },
+                attrs: {
+                  oninput:
+                    'this.style.height = "";this.style.height = (this.scrollHeight + 3) + "px"',
+                  placeholder: "Hier komt je heading"
+                },
+                domProps: { value: _vm.workHeading.heading },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.workHeading, "heading", $event.target.value)
+                  }
+                }
+              })
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.errors.hasOwnProperty("heading")
+            ? _c("span", { staticClass: "invalid-feedback" }, [
+                _c("strong", [
+                  _vm._v(
+                    " Ik kan niet niets opslaan!  (Je mag me wel verwijderen - zie rechter marge) "
+                  )
+                ])
+              ])
+            : _vm._e(),
+          _vm._v(" "),
+          _c(
+            "button",
+            { staticClass: "btn btn-primary", on: { click: _vm.saveHeading } },
+            [_vm._v("Sla wijzigingen op")]
+          ),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-outline-secondary",
+              on: { click: _vm.cancelEdit }
+            },
+            [_vm._v("Verwerp wijzigingen")]
+          )
+        ])
+      : _vm._e()
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-8a934f0e", module.exports)
   }
 }
 

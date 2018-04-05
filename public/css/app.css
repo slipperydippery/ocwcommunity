@@ -10008,6 +10008,44 @@ a.text-dark:focus {
   display: inline-block;
 }
 
+/* Rules for sizing the icon. */
+
+.material-icons.md-18 {
+  font-size: 18px;
+}
+
+.material-icons.md-24 {
+  font-size: 24px;
+}
+
+.material-icons.md-36 {
+  font-size: 36px;
+}
+
+.material-icons.md-48 {
+  font-size: 48px;
+}
+
+/* Rules for using icons as black on a light background. */
+
+.material-icons.md-dark {
+  color: rgba(0, 0, 0, 0.54);
+}
+
+.material-icons.md-dark.md-inactive {
+  color: rgba(0, 0, 0, 0.26);
+}
+
+/* Rules for using icons as white on a dark background. */
+
+.material-icons.md-light {
+  color: white;
+}
+
+.material-icons.md-light.md-inactive {
+  color: rgba(255, 255, 255, 0.3);
+}
+
 body {
   color: #11536D;
 }
@@ -10102,12 +10140,16 @@ a.nav-link--main {
 
 .articleitem {
   position: relative;
+  margin-bottom: 1rem;
+  min-height: 80px;
 }
 
-.articleitem .deleteicon {
+.articleitem .articleitem--control {
   position: absolute;
-  right: -1rem;
-  top: 0;
+  right: -1.5rem;
+  top: 0rem;
+  padding: 0.3rem 0.2rem 0;
+  background: #e9ecef;
 }
 
 .article-tags {
@@ -10118,10 +10160,14 @@ a.nav-link--main {
   font-size: .8rem;
 }
 
-.paragraph .paragraph--clean,
-.blockquote .blockquote--clean {
+.articleitem .articleitem--clean {
   border: 1px solid #e9ecef;
   padding: .8rem;
+}
+
+.articleitem .articleitem--clean,
+.articleitem .articleitem--edit {
+  padding-top: .8rem;
 }
 
 .blockquote--edit textarea {

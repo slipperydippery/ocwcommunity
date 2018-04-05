@@ -1,11 +1,11 @@
 <template>
 	<div class="blockquote">
-        <div class="blockquote--clean" v-if=" ! blockquoteEditable " @click="editBlockquote">
+        <div class="articleitem--clean" v-if=" ! blockquoteEditable " @click="editBlockquote">
             <blockquote class="blockquote">
             	<p class="mb-0"> {{ workBlockquote.quote }} </p>
             </blockquote>
         </div>
-        <div class="blockquote--edit form-group" v-if=" blockquoteEditable ">
+        <div class="articleitem--edit form-group" v-if=" blockquoteEditable ">
             <textarea 
                 v-if="blockquoteEditable"
                 class="form-control" 

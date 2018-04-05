@@ -1,42 +1,44 @@
 <template>
-	<div class="titlebox">
-		<div class="titlebox--clean form-group" v-if="! titleEditable" @click="editTitle">
-			<h1> {{ article.title }} </h1>
-            <p class="lead" v-for="thisparagraph in textBoi(article.short)">
-                {{ thisparagraph }}
-            </p>
-		</div>
-		<div class="titlebox--edit" v-if="titleEditable">
-			<input type="text" class="form-control" :class=" { 'is-invalid': errors.hasOwnProperty('title') } " v-model="article.title" ref="titleinput">
-            <span class="invalid-feedback" v-if="errors.hasOwnProperty('title')">
-                <strong> De titel moet tussen de 3 en 255 tekens zijn.</strong>
-            </span>
-            <textarea 
-                class="form-control"
-                :class=" { 'is-invalid': errors.hasOwnProperty('short') } "
-                v-model="article.short" 
-                oninput='this.style.height = "";this.style.height = (this.scrollHeight + 3) + "px"'
-                ref="input"
-                placeholder="Hier kan een lead tekst, maar dat hoeft niet."
-            >
-            </textarea>
-            <span class="invalid-feedback" v-if="errors.hasOwnProperty('short')">
-                <strong> Ik kan niet niets opslaan!  (Je mag me wel verwijderen - zie rechter marge) </strong>
-            </span>
-			<button 
-				class="btn btn-primary btn-small" 
-				@click="saveTitle"
-			>
-				sla op
-			</button>
-			<button
-				class="btn btn-outline-secondary btn-small" 
-				@click="cancelEdit"
-			>
-				Annuleer
-			</button>
-		</div>
-	</div>
+    <div class="articleitem">
+    	<div class="titlebox">
+    		<div class="articleitem--clean form-group" v-if="! titleEditable" @click="editTitle">
+    			<h1> {{ article.title }} </h1>
+                <p class="lead" v-for="thisparagraph in textBoi(article.short)">
+                    {{ thisparagraph }}
+                </p>
+    		</div>
+    		<div class="articleitem--edit" v-if="titleEditable">
+    			<input type="text" class="form-control" :class=" { 'is-invalid': errors.hasOwnProperty('title') } " v-model="article.title" ref="titleinput">
+                <span class="invalid-feedback" v-if="errors.hasOwnProperty('title')">
+                    <strong> De titel moet tussen de 3 en 255 tekens zijn.</strong>
+                </span>
+                <textarea 
+                    class="form-control"
+                    :class=" { 'is-invalid': errors.hasOwnProperty('short') } "
+                    v-model="article.short" 
+                    oninput='this.style.height = "";this.style.height = (this.scrollHeight + 3) + "px"'
+                    ref="input"
+                    placeholder="Hier kan een lead tekst, maar dat hoeft niet."
+                >
+                </textarea>
+                <span class="invalid-feedback" v-if="errors.hasOwnProperty('short')">
+                    <strong> Ik kan niet niets opslaan!  (Je mag me wel verwijderen - zie rechter marge) </strong>
+                </span>
+    			<button 
+    				class="btn btn-primary btn-small" 
+    				@click="saveTitle"
+    			>
+    				sla op
+    			</button>
+    			<button
+    				class="btn btn-outline-secondary btn-small" 
+    				@click="cancelEdit"
+    			>
+    				Annuleer
+    			</button>
+    		</div>
+    	</div>
+    </div>
 </template>
 
 <script>

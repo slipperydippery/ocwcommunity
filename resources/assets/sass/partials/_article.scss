@@ -3,11 +3,15 @@
 
 .articleitem {
 	position: relative;
+	margin-bottom: 1rem;
+	min-height: 80px;
 
-	.deleteicon {
+	.articleitem--control {
 		position: absolute;
-		right: -1rem;
-		top: 0;
+		right: -1.5rem;
+		top: 0rem;
+		padding: 0.3rem 0.2rem 0;
+		background: $gray-200;
 	}
 }
 
@@ -18,9 +22,13 @@
 	}
 }
 
-.paragraph .paragraph--clean, .blockquote .blockquote--clean {
+.articleitem .articleitem--clean {
 	border: 1px solid $gray-200;
 	padding: .8rem;
+}
+
+.articleitem .articleitem--clean, .articleitem .articleitem--edit {
+	padding-top: .8rem;
 }
 
 .blockquote--edit textarea{

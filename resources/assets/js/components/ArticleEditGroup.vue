@@ -15,7 +15,8 @@
 		>
 		</article-edit-item>
         <button class="btn btn-primary" @click="addParagraph"> Voeg een paragraaf toe</button>
-		<button class="btn btn-primary" @click="addBlockquote"> Voeg een citaat toe</button>
+        <button class="btn btn-primary" @click="addBlockquote"> Voeg een citaat toe</button>
+		<button class="btn btn-primary" @click="addHeading"> Voeg een heading toe</button>
 	</div>
 </template>
 
@@ -44,7 +45,7 @@
                 this.sortArticleitems();
         		axios.post('/api/article/' + this.article.id + '/paragraph/store', {
                     paragraph: '',
-                    order: ( this.article.articleitems.length ),
+                    order: this.article.articleitems.length,
                 })
                 .then(response => {
                     response.data.articleitemable.editable = true;
@@ -56,7 +57,19 @@
                 this.sortArticleitems();
                 axios.post('/api/article/' + this.article.id + '/blockquote/store', {
                     blockquote: '',
-                    order: (this.article.articleitems.length),
+                    order: this.article.articleitems.length,
+                })
+                .then(response => {
+                    response.data.articleitemable.editable = true;
+                    this.articleitems.push(response.data);
+                })
+            },
+
+            addHeading() {
+                this.sortArticleitems();
+                axios.post('/api/article/' + this.article.id + '/heading/store', {
+                    heading: '',
+                    order: this.article.articleitems.length,
                 })
                 .then(response => {
                     response.data.articleitemable.editable = true;
