@@ -1,4 +1,14 @@
-@import url(https://fonts.googleapis.com/css?family=Raleway:300,400,600);@import url(https://fonts.googleapis.com/css?family=Oswald:400);@import url(https://fonts.googleapis.com/css?family=Lato:300,400,600);/*!
+@import url(https://fonts.googleapis.com/css?family=Raleway:300,400,600);@import url(https://fonts.googleapis.com/css?family=Oswald:400);@import url(https://fonts.googleapis.com/css?family=Lato:300,400,600);.form-control {
+  border-radius: 0 !important;
+}
+
+.form-control:focus {
+  -webkit-box-shadow: none !important;
+          box-shadow: none !important;
+  border-color: #11536D !important;
+}
+
+/*!
  * Bootstrap v4.0.0 (https://getbootstrap.com)
  * Copyright 2011-2018 The Bootstrap Authors
  * Copyright 2011-2018 Twitter, Inc.
@@ -10090,6 +10100,10 @@ a.nav-link--main {
   border-radius: 0;
 }
 
+.btn-outline-noborder {
+  border-color: rgba(255, 255, 255, 0) !important;
+}
+
 .sidebar {
   background: white;
   padding: 1.25rem;
@@ -10138,6 +10152,14 @@ a.nav-link--main {
   border-bottom: 1px solid;
 }
 
+.article-tags {
+  margin: 0 0 1rem 0;
+}
+
+.article-tags button {
+  font-size: .8rem;
+}
+
 .articleitem {
   position: relative;
   margin-bottom: 1rem;
@@ -10154,29 +10176,30 @@ a.nav-link--main {
   transition: all .5s;
 }
 
-.articleitem:hover .articleitem--control {
-  opacity: 1;
-}
-
 .articleitem .articleitem--clean {
   border: 1px solid #e9ecef;
   padding: .8rem;
+}
+
+.articleitem:hover .articleitem--control {
+  opacity: 1;
 }
 
 .articleitem:hover .articleitem--clean {
   border: 1px solid #ced4da;
 }
 
-.article-tags {
-  margin: 0 0 1rem 0;
-}
-
-.article-tags button {
-  font-size: .8rem;
-}
-
 .articleitem .articleitem--clean {
   padding-top: .8rem;
+}
+
+.articleitem .articleitem--edit {
+  border: 1px solid #11536D;
+}
+
+.articleitem .articleitem--edit .form-control {
+  margin-top: 1px;
+  border-width: 0 0 1px 0;
 }
 
 .blockquote--edit textarea {

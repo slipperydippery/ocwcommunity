@@ -48500,7 +48500,7 @@ var render = function() {
           _c(
             "button",
             {
-              staticClass: "btn btn-outline-secondary",
+              staticClass: "btn btn-outline-secondary btn-outline-noborder",
               on: { click: _vm.cancelEdit }
             },
             [_vm._v("Verwerp wijzigingen")]
@@ -49045,7 +49045,7 @@ var render = function() {
           _c(
             "button",
             {
-              staticClass: "btn btn-outline-secondary",
+              staticClass: "btn btn-outline-secondary btn-outline-noborder",
               on: { click: _vm.cancelEdit }
             },
             [_vm._v("Verwerp wijzigingen")]
@@ -49276,7 +49276,7 @@ var render = function() {
           _c(
             "button",
             {
-              staticClass: "btn btn-outline-secondary",
+              staticClass: "btn btn-outline-secondary btn-outline-noborder",
               on: { click: _vm.cancelEdit }
             },
             [_vm._v("Verwerp wijzigingen")]
