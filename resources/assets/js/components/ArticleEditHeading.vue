@@ -1,13 +1,13 @@
 <template>
 	<div class="heading">
-        <div class="articleitem--clean" v-if=" ! headingEditable " @click="editHeading">
+        <div class="articleitem--clean" v-if=" ! (currentlyEditing == initHeading) " @click="editHeading">
             <h4 class="heading">
             	{{ workHeading.heading }}
             </h4>
         </div>
-        <div class="articleitem--edit form-group" v-if=" headingEditable ">
+        <div class="articleitem--edit form-group" v-if=" (currentlyEditing == initHeading) ">
             <textarea 
-                v-if="headingEditable"
+                v-if="(currentlyEditing == initHeading)"
                 class="form-control" 
                 :class=" { 'is-invalid': errors.hasOwnProperty('heading') } "
                 v-model="workHeading.heading" 
@@ -20,7 +20,8 @@
                 <strong> Ik kan niet niets opslaan!  (Je mag me wel verwijderen - zie rechter marge) </strong>
             </span>
             <button class="btn btn-primary" @click="saveHeading">Sla wijzigingen op</button>
-            <button class="btn btn-outline-secondary btn-outline-noborder" @click="cancelEdit">Verwerp wijzigingen</button>
+            <button class="btn btn-outline-secondary btn-outline-noborder" @click="cancelEdit" v-if="initHeading.heading == workHeading.heading"> Annuleer </button>
+            <button class="btn btn-outline-secondary btn-outline-noborder" @click="cancelEdit" v-else> Verwerp wijzigingen </button>
         </div>
 	</div>
 </template>
@@ -28,12 +29,12 @@
 <script>
     export default {
         props: [
-	        'initHeading'
+	        'initHeading',
+            'currentlyEditing'
         ],
 
         data() {
             return {
-                'headingEditable': false,
                 'baseHeading': {heading: ''},
             	'workHeading': {heading: ''},
             	'errors': []
@@ -48,16 +49,27 @@
             }
         },
 
+        watch: {
+            currentlyEditing(newVal, oldVal) {
+                if(newVal == this.initHeading) {
+                    this.activateEditHeading();
+                }
+            }
+        },
+
         computed: {
         },
 
         methods: {
             editHeading() {
-                this.headingEditable = true;
+                this.$emit('setCurrentlyEditing', this.initHeading);
+            },
+
+            activateEditHeading() {
                 this.$nextTick(() => {
                     this.$refs.input.focus();
                     this.$refs.input.style.height = (this.$refs.input.scrollHeight + 3) + 'px';
-                })
+                });
             },
 
             saveHeading() {
@@ -66,7 +78,7 @@
                 })
                 .then(response => {
                     this.baseHeading = Object.assign({}, this.workHeading); 
-                    this.headingEditable = false;
+                    this.$emit('setCurrentlyEditing', {});
                 })
                 .catch( e => {
                     if(e.response.data.exception){
@@ -79,7 +91,7 @@
 
             cancelEdit() {
                 this.workHeading = Object.assign({}, this.baseHeading);
-                this.headingEditable = false;
+                this.$emit('setCurrentlyEditing', {});
             }
         }
     }

@@ -1,13 +1,13 @@
 <template>
 	<div class="blockquote">
-        <div class="articleitem--clean" v-if=" ! blockquoteEditable " @click="editBlockquote">
+        <div class="articleitem--clean" v-if=" ! (currentlyEditing == initBlockquote) " @click="editBlockquote">
             <blockquote class="blockquote">
             	<p class="mb-0"> {{ workBlockquote.quote }} </p>
             </blockquote>
         </div>
-        <div class="articleitem--edit form-group" v-if=" blockquoteEditable ">
+        <div class="articleitem--edit form-group" v-if=" (currentlyEditing == initBlockquote) ">
             <textarea 
-                v-if="blockquoteEditable"
+                v-if="(currentlyEditing == initBlockquote)"
                 class="form-control" 
                 :class=" { 'is-invalid': errors.hasOwnProperty('quote') } "
                 v-model="workBlockquote.quote" 
@@ -20,7 +20,8 @@
                 <strong> Ik kan niet niets opslaan!  (Je mag me wel verwijderen - zie rechter marge) </strong>
             </span>
             <button class="btn btn-primary" @click="saveBlockquote">Sla wijzigingen op</button>
-            <button class="btn btn-outline-secondary btn-outline-noborder" @click="cancelEdit">Verwerp wijzigingen</button>
+            <button class="btn btn-outline-secondary btn-outline-noborder" @click="cancelEdit" v-if="initBlockquote.quote == workBlockquote.quote"> Annuleer </button>
+            <button class="btn btn-outline-secondary btn-outline-noborder" @click="cancelEdit" v-else> Verwerp wijzigingen </button>
         </div>
 	</div>
 </template>
@@ -28,12 +29,12 @@
 <script>
     export default {
         props: [
-	        'initBlockquote'
+	        'initBlockquote',
+            'currentlyEditing'
         ],
 
         data() {
             return {
-                'blockquoteEditable': false,
                 'baseBlockquote': {quote: ''},
             	'workBlockquote': {quote: ''},
             	'errors': []
@@ -48,16 +49,27 @@
             }
         },
 
+        watch: {
+            currentlyEditing(newVal, oldVal) {
+                if(newVal == this.initBlockquote) {
+                    this.activateEditBlockquote();
+                }
+            }
+        },
+
         computed: {
         },
 
         methods: {
             editBlockquote() {
-                this.blockquoteEditable = true;
+                this.$emit('setCurrentlyEditing', this.initBlockquote);
+            },
+
+            activateEditBlockquote() {
                 this.$nextTick(() => {
                     this.$refs.input.focus();
                     this.$refs.input.style.height = (this.$refs.input.scrollHeight + 3) + 'px';
-                })
+                });
             },
 
             saveBlockquote() {
@@ -66,6 +78,7 @@
                 })
                 .then(response => {
                     this.baseBlockquote = Object.assign({}, this.workBlockquote); 
+                    this.$emit('setCurrentlyEditing', {});
                     this.blockquoteEditable = false;
                 })
                 .catch( e => {
@@ -79,7 +92,7 @@
 
             cancelEdit() {
                 this.workBlockquote = Object.assign({}, this.baseBlockquote);
-                this.blockquoteEditable = false;
+                this.$emit('setCurrentlyEditing', {});
             }
         }
     }

@@ -1,13 +1,13 @@
 <template>
 	<div class="paragraph">
-        <div class="articleitem--clean" v-if=" ! paragraphEditable " @click="editParagraph">
+        <div class="articleitem--clean" v-if=" ! (currentlyEditing == initParagraph) " @click="editParagraph">
             <p v-for="thisparagraph in textBoi(workParagraph.body)">
                 {{ thisparagraph }}
             </p>
         </div>
-        <div class="articleitem--edit form-group" v-if=" paragraphEditable ">
+        <div class="articleitem--edit form-group" v-if=" currentlyEditing == initParagraph ">
             <textarea 
-                v-if="paragraphEditable"
+                v-if="currentlyEditing == initParagraph"
                 class="form-control"
                 :class=" { 'is-invalid': errors.hasOwnProperty('body') } "
                 v-model="workParagraph.body" 
@@ -19,7 +19,8 @@
                 <strong> Ik kan niet niets opslaan!  (Je mag me wel verwijderen - zie rechter marge) </strong>
             </span>
             <button class="btn btn-primary" @click="saveParagraph">Sla wijzigingen op</button>
-            <button class="btn btn-outline-secondary btn-outline-noborder" @click="cancelEdit">Verwerp wijzigingen</button>
+            <button class="btn btn-outline-secondary btn-outline-noborder" @click="cancelEdit" v-if="workParagraph.body == initParagraph.body"> Annuleer </button>
+            <button class="btn btn-outline-secondary btn-outline-noborder" @click="cancelEdit" v-else> Verwerp wijzigingen </button>
         </div>
 	</div>
 
@@ -29,12 +30,12 @@
 
     export default {
         props: [
-            'initParagraph'
+            'initParagraph',
+            'currentlyEditing'
         ],
 
         data() {
             return {
-                'paragraphEditable': false,
                 'baseParagraph': {body: ''},
                 'workParagraph': {body: ''},
                 'errors': []
@@ -44,8 +45,13 @@
         mounted() {
             this.baseParagraph = Object.assign({}, this.initParagraph);
             this.workParagraph = Object.assign({}, this.initParagraph);
-            if(this.initParagraph.editable){
-                this.editParagraph();
+        },
+
+        watch: {
+            currentlyEditing(newVal, oldVal) {
+                if(newVal == this.initParagraph) {
+                    this.activateEditParagraph();
+                }
             }
         },
 
@@ -66,7 +72,10 @@
             },
 
             editParagraph() {
-                this.paragraphEditable = true;
+                this.$emit('setCurrentlyEditing', this.initParagraph);
+            },
+
+            activateEditParagraph() {
                 this.$nextTick(() => {
                     this.$refs.input.style.height = (this.$refs.input.scrollHeight + 3) + 'px';
                     this.$refs.input.focus();
@@ -79,7 +88,7 @@
                 })
                 .then(response => {
                     this.baseParagraph = Object.assign({}, this.workParagraph); 
-                    this.paragraphEditable = false;
+                    this.$emit('setCurrentlyEditing', {});
                 })
                 .catch( e => {
                     if(e.response.data.exception){
@@ -92,7 +101,7 @@
 
             cancelEdit() {
                 this.workParagraph = Object.assign({}, this.baseParagraph);
-                this.paragraphEditable = false;
+                this.$emit('setCurrentlyEditing', {});
             }
 
         }

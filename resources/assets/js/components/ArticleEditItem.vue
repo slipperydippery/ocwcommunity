@@ -27,16 +27,22 @@
         <article-edit-paragraph
             v-if="isParagraph"
             :initParagraph="articleitem.articleitemable"
+            :currentlyEditing="currentlyEditing"
+            @setCurrentlyEditing="setCurrentlyEditing"
         >
         </article-edit-paragraph>
         <article-edit-blockquote
             v-if="articleitem.articleitemable_type.includes('Blockquote')"
             :initBlockquote="articleitem.articleitemable"
+            :currentlyEditing="currentlyEditing"
+            @setCurrentlyEditing="setCurrentlyEditing"
         >
         </article-edit-blockquote>
         <article-edit-heading
             v-if="articleitem.articleitemable_type.includes('Heading')"
             :initHeading="articleitem.articleitemable"
+            :currentlyEditing="currentlyEditing"
+            @setCurrentlyEditing="setCurrentlyEditing"
         >
         </article-edit-heading>
 
@@ -71,7 +77,8 @@
         props: [
         	'articleitem',
             'isFirst',
-            'isLast'
+            'isLast',
+            'currentlyEditing'
         ],
 
         data() {
@@ -102,6 +109,10 @@
 
             moveDown() {
                 this.$emit('moveDown', this.articleitem);
+            },
+
+            setCurrentlyEditing(articleitemable) {
+                this.$emit('setCurrentlyEditing', articleitemable);
             }
         }
     }
