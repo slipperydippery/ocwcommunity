@@ -49109,6 +49109,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ['initBlockquote', 'currentlyEditing'],
@@ -49315,14 +49320,15 @@ var render = function() {
             [_vm._v("Sla wijzigingen op")]
           ),
           _vm._v(" "),
-          _vm.baseBlockquote.quote == _vm.workBlockquote.quote
+          _vm.baseBlockquote.quote == _vm.workBlockquote.quote &&
+          _vm.baseBlockquote.source == _vm.workBlockquote.source
             ? _c(
                 "button",
                 {
                   staticClass: "btn btn-outline-secondary btn-outline-noborder",
                   on: { click: _vm.cancelEdit }
                 },
-                [_vm._v(" Annuleer ")]
+                [_vm._v(" \n                Annuleer \n            ")]
               )
             : _c(
                 "button",
