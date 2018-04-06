@@ -19,7 +19,7 @@
                 <strong> Ik kan niet niets opslaan!  (Je mag me wel verwijderen - zie rechter marge) </strong>
             </span>
             <button class="btn btn-primary" @click="saveParagraph">Sla wijzigingen op</button>
-            <button class="btn btn-outline-secondary btn-outline-noborder" @click="cancelEdit" v-if="workParagraph.body == initParagraph.body"> Annuleer </button>
+            <button class="btn btn-outline-secondary btn-outline-noborder" @click="cancelEdit" v-if="workParagraph.body == baseParagraph.body"> Annuleer </button>
             <button class="btn btn-outline-secondary btn-outline-noborder" @click="cancelEdit" v-else> Verwerp wijzigingen </button>
         </div>
 	</div>

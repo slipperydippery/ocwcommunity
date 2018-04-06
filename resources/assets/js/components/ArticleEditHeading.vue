@@ -20,7 +20,7 @@
                 <strong> Ik kan niet niets opslaan!  (Je mag me wel verwijderen - zie rechter marge) </strong>
             </span>
             <button class="btn btn-primary" @click="saveHeading">Sla wijzigingen op</button>
-            <button class="btn btn-outline-secondary btn-outline-noborder" @click="cancelEdit" v-if="initHeading.heading == workHeading.heading"> Annuleer </button>
+            <button class="btn btn-outline-secondary btn-outline-noborder" @click="cancelEdit" v-if="baseHeading.heading == workHeading.heading"> Annuleer </button>
             <button class="btn btn-outline-secondary btn-outline-noborder" @click="cancelEdit" v-else> Verwerp wijzigingen </button>
         </div>
 	</div>

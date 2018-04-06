@@ -48659,7 +48659,7 @@ var render = function() {
             [_vm._v("Sla wijzigingen op")]
           ),
           _vm._v(" "),
-          _vm.workParagraph.body == _vm.initParagraph.body
+          _vm.workParagraph.body == _vm.baseParagraph.body
             ? _c(
                 "button",
                 {
@@ -49234,7 +49234,7 @@ var render = function() {
             [_vm._v("Sla wijzigingen op")]
           ),
           _vm._v(" "),
-          _vm.initBlockquote.quote == _vm.workBlockquote.quote
+          _vm.baseBlockquote.quote == _vm.workBlockquote.quote
             ? _c(
                 "button",
                 {
@@ -49484,7 +49484,7 @@ var render = function() {
             [_vm._v("Sla wijzigingen op")]
           ),
           _vm._v(" "),
-          _vm.initHeading.heading == _vm.workHeading.heading
+          _vm.baseHeading.heading == _vm.workHeading.heading
             ? _c(
                 "button",
                 {
