@@ -1,8 +1,9 @@
 <template>
-	<div class="blockquote">
+	<div class="blockquotebox">
         <div class="articleitem--clean" v-if=" ! (currentlyEditing == initBlockquote) " @click="editBlockquote">
             <blockquote class="blockquote">
             	<p class="mb-0"> {{ workBlockquote.quote }} </p>
+                <footer class="blockquote-footer"><cite title="Source Title"> {{ workBlockquote.source }} </cite></footer>
             </blockquote>
         </div>
         <div class="articleitem--edit form-group" v-if=" (currentlyEditing == initBlockquote) ">
@@ -16,6 +17,7 @@
                 placeholder="Schijf hier je citaat" 
             >
             </textarea>
+            <input type="text" class="form-control" :class=" { 'is-invalid': errors.hasOwnProperty('source') } " v-model="workBlockquote.source" v-if="(currentlyEditing == initBlockquote)">
             <span class="invalid-feedback" v-if="errors.hasOwnProperty('quote')">
                 <strong> Ik kan niet niets opslaan!  (Je mag me wel verwijderen - zie rechter marge) </strong>
             </span>
@@ -35,8 +37,8 @@
 
         data() {
             return {
-                'baseBlockquote': {quote: ''},
-            	'workBlockquote': {quote: ''},
+                'baseBlockquote': {quote: '', source: ''},
+            	'workBlockquote': {quote: '', source: ''},
             	'errors': []
             }
         },
@@ -74,7 +76,8 @@
 
             saveBlockquote() {
                 axios.post('/api/blockquote/' + this.workBlockquote.id + '/update', {
-                    quote: this.workBlockquote.quote
+                    quote: this.workBlockquote.quote,
+                    source: this.workBlockquote.source
                 })
                 .then(response => {
                     this.baseBlockquote = Object.assign({}, this.workBlockquote); 

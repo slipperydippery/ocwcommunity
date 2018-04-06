@@ -1,6 +1,6 @@
     <template>
-	<div class="">
-		<article-edit-title
+	<div class="article">
+        <article-edit-title
             :oldarticle="article"
             :currentlyEditing="currentlyEditing"
             @articleUpdated="updateArticle()"
@@ -21,9 +21,11 @@
 		>
             {{ index }}
 		</article-edit-item>
-        <button class="btn btn-primary" :disabled="isCurrentlyEditing" @click="addParagraph"> <i class="material-icons">add</i> <i class="material-icons">format_align_justify</i> </button>
-        <button class="btn btn-primary" :disabled="isCurrentlyEditing" @click="addBlockquote"> <i class="material-icons">add</i> <i class="material-icons">format_quote</i> </button>
-		<button class="btn btn-primary" :disabled="isCurrentlyEditing" @click="addHeading"> <i class="material-icons">add</i> <i class="material-icons">title</i></button>
+        <div class="article--extend">
+            <button class="btn btn-primary" :disabled="isCurrentlyEditing" @click="addParagraph"> <i class="material-icons">add</i> <i class="material-icons">format_align_justify</i> </button>
+            <button class="btn btn-primary" :disabled="isCurrentlyEditing" @click="addBlockquote"> <i class="material-icons">add</i> <i class="material-icons">format_quote</i> </button>
+    		<button class="btn btn-primary" :disabled="isCurrentlyEditing" @click="addHeading"> <i class="material-icons">add</i> <i class="material-icons">title</i></button>
+        </div>
 
         <!-- Modal -->
         <div class="modal fade" id="preventEditCollapse" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

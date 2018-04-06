@@ -1,4 +1,6 @@
-@import url(https://fonts.googleapis.com/css?family=Raleway:300,400,600);@import url(https://fonts.googleapis.com/css?family=Oswald:400);@import url(https://fonts.googleapis.com/css?family=Lato:300,400,600);.form-control {
+@import url(https://fonts.googleapis.com/css?family=Raleway:300,400,600);@import url(https://fonts.googleapis.com/css?family=Oswald:400);@import url(https://fonts.googleapis.com/css?family=Lato:300,400,600);@charset "UTF-8";
+
+.form-control {
   border-radius: 0 !important;
 }
 
@@ -10152,6 +10154,13 @@ a.nav-link--main {
   border-bottom: 1px solid;
 }
 
+.article .blockquote {
+  background: #f9f9f9;
+  border-left: 4px solid #734A5C;
+  padding: 0.5em 20px;
+  quotes: "\201C" "\201D" "\2018" "\2019";
+}
+
 .article-tags {
   margin: 0 0 1rem 0;
 }
@@ -10162,7 +10171,6 @@ a.nav-link--main {
 
 .articleitem {
   position: relative;
-  margin-bottom: 1rem;
 }
 
 .articleitem .articleitem--control {
@@ -10177,8 +10185,8 @@ a.nav-link--main {
 }
 
 .articleitem .articleitem--clean {
-  border: 1px solid #e9ecef;
-  padding: .8rem;
+  border: 1px solid rgba(255, 255, 255, 0);
+  padding: 0 .8rem 0;
 }
 
 .articleitem:hover .articleitem--control {
@@ -10189,8 +10197,8 @@ a.nav-link--main {
   border: 1px solid #ced4da;
 }
 
-.articleitem .articleitem--clean {
-  padding-top: .8rem;
+.articleitem .form-group {
+  margin-bottom: 0;
 }
 
 .articleitem .articleitem--edit {
@@ -10204,6 +10212,21 @@ a.nav-link--main {
 
 .blockquote--edit textarea {
   font-size: 1.25rem;
+}
+
+.titlebox .titlefield {
+  font-size: 3.5rem;
+  font-weight: 300;
+  line-height: 1.2;
+}
+
+.titlebox .shortfield {
+  font-size: 1.25rem;
+  font-weight: 300;
+}
+
+.article--extend {
+  padding: .8rem;
 }
 
 .forum-post {

@@ -71,9 +71,11 @@ class ApiBlockquoteController extends Controller
     {
         $this->validate(request(), [
             'quote' => 'required|min:3|max:140',
+            'source' => ''
         ]);
 
         $blockquote->quote = $request->quote;
+        $blockquote->source = $request->source;
         $blockquote->save();
 
         return $blockquote;

@@ -1,26 +1,14 @@
 <template>
     <div class="articleitem">
     	<div class="titlebox">
-    		<div class="articleitem--clean form-group" v-if="! (currentlyEditing == 'title')" @click="editTitle">
-    			<h1 class="display-4"> {{ article.title }} </h1>
+    		<div class="articleitem--clean form-group" v-if="! (currentlyEditing == 'short')" @click="editTitle">
                 <p class="lead" v-for="thisparagraph in textBoi(article.short)">
                     {{ thisparagraph }}
                 </p>
     		</div>
-    		<div class="articleitem--edit" v-if="(currentlyEditing == 'title')">
+    		<div class="articleitem--edit" v-if="(currentlyEditing == 'short')">
                 <textarea 
-                    class="form-control titlefield"
-                    :class=" { 'is-invalid': errors.hasOwnProperty('title') } "
-                    v-model="article.title" 
-                    oninput='this.style.height = "";this.style.height = (this.scrollHeight + 3) + "px"'
-                    ref="titleinput"
-                >
-                </textarea>
-                <span class="invalid-feedback" v-if="errors.hasOwnProperty('title')">
-                    <strong> De titel moet tussen de 3 en 255 tekens zijn.</strong>
-                </span>
-                <textarea 
-                    class="form-control shortfield"
+                    class="form-control"
                     :class=" { 'is-invalid': errors.hasOwnProperty('short') } "
                     v-model="article.short" 
                     oninput='this.style.height = "";this.style.height = (this.scrollHeight + 3) + "px"'
@@ -82,16 +70,12 @@
             },
 
         	editTitle() {
-        		this.$emit('setCurrentlyEditing', 'title');
-                this.activateEditTitle();
+        		this.$emit('setCurrentlyEditing', 'short');
             },
 
             activateEditTitle() {
-                this.$nextTick(() => {
-                    this.$refs.titleinput.style.height = (this.$refs.input.scrollHeight + 30) + 'px';
-                    this.$refs.input.style.height = (this.$refs.input.scrollHeight + 4) + 'px';
-                    this.$refs.titleinput.focus();
-                })
+        		this.$nextTick(() => this.$refs.titleinput.focus());
+                this.$nextTick(() => this.$refs.input.style.height = (this.$refs.input.scrollHeight + 3) + 'px');
             },
 
         	saveTitle() {

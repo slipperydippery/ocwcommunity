@@ -47761,6 +47761,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ['article'],
@@ -47903,7 +47905,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    {},
+    { staticClass: "article" },
     [
       _c("article-edit-title", {
         attrs: {
@@ -47940,49 +47942,51 @@ var render = function() {
         )
       }),
       _vm._v(" "),
-      _c(
-        "button",
-        {
-          staticClass: "btn btn-primary",
-          attrs: { disabled: _vm.isCurrentlyEditing },
-          on: { click: _vm.addParagraph }
-        },
-        [
-          _c("i", { staticClass: "material-icons" }, [_vm._v("add")]),
-          _vm._v(" "),
-          _c("i", { staticClass: "material-icons" }, [
-            _vm._v("format_align_justify")
-          ])
-        ]
-      ),
-      _vm._v(" "),
-      _c(
-        "button",
-        {
-          staticClass: "btn btn-primary",
-          attrs: { disabled: _vm.isCurrentlyEditing },
-          on: { click: _vm.addBlockquote }
-        },
-        [
-          _c("i", { staticClass: "material-icons" }, [_vm._v("add")]),
-          _vm._v(" "),
-          _c("i", { staticClass: "material-icons" }, [_vm._v("format_quote")])
-        ]
-      ),
-      _vm._v(" "),
-      _c(
-        "button",
-        {
-          staticClass: "btn btn-primary",
-          attrs: { disabled: _vm.isCurrentlyEditing },
-          on: { click: _vm.addHeading }
-        },
-        [
-          _c("i", { staticClass: "material-icons" }, [_vm._v("add")]),
-          _vm._v(" "),
-          _c("i", { staticClass: "material-icons" }, [_vm._v("title")])
-        ]
-      ),
+      _c("div", { staticClass: "article--extend" }, [
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-primary",
+            attrs: { disabled: _vm.isCurrentlyEditing },
+            on: { click: _vm.addParagraph }
+          },
+          [
+            _c("i", { staticClass: "material-icons" }, [_vm._v("add")]),
+            _vm._v(" "),
+            _c("i", { staticClass: "material-icons" }, [
+              _vm._v("format_align_justify")
+            ])
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-primary",
+            attrs: { disabled: _vm.isCurrentlyEditing },
+            on: { click: _vm.addBlockquote }
+          },
+          [
+            _c("i", { staticClass: "material-icons" }, [_vm._v("add")]),
+            _vm._v(" "),
+            _c("i", { staticClass: "material-icons" }, [_vm._v("format_quote")])
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-primary",
+            attrs: { disabled: _vm.isCurrentlyEditing },
+            on: { click: _vm.addHeading }
+          },
+          [
+            _c("i", { staticClass: "material-icons" }, [_vm._v("add")]),
+            _vm._v(" "),
+            _c("i", { staticClass: "material-icons" }, [_vm._v("title")])
+          ]
+        )
+      ]),
       _vm._v(" "),
       _vm._m(0)
     ],
@@ -48787,6 +48791,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ['oldarticle', 'currentlyEditing'],
@@ -48825,16 +48836,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }
         },
         editTitle: function editTitle() {
-            this.$emit('setCurrentlyEditing', this.oldarticle);
+            this.$emit('setCurrentlyEditing', 'title');
+            this.activateEditTitle();
         },
         activateEditTitle: function activateEditTitle() {
             var _this = this;
 
             this.$nextTick(function () {
-                return _this.$refs.titleinput.focus();
-            });
-            this.$nextTick(function () {
-                return _this.$refs.input.style.height = _this.$refs.input.scrollHeight + 3 + 'px';
+                _this.$refs.titleinput.style.height = _this.$refs.input.scrollHeight + 30 + 'px';
+                _this.$refs.input.style.height = _this.$refs.input.scrollHeight + 4 + 'px';
+                _this.$refs.titleinput.focus();
             });
         },
         saveTitle: function saveTitle() {
@@ -48872,7 +48883,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "articleitem" }, [
     _c("div", { staticClass: "titlebox" }, [
-      !(_vm.currentlyEditing == _vm.oldarticle)
+      !(_vm.currentlyEditing == "title")
         ? _c(
             "div",
             {
@@ -48880,7 +48891,9 @@ var render = function() {
               on: { click: _vm.editTitle }
             },
             [
-              _c("h1", [_vm._v(" " + _vm._s(_vm.article.title) + " ")]),
+              _c("h1", { staticClass: "display-4" }, [
+                _vm._v(" " + _vm._s(_vm.article.title) + " ")
+              ]),
               _vm._v(" "),
               _vm._l(_vm.textBoi(_vm.article.short), function(thisparagraph) {
                 return _c("p", { staticClass: "lead" }, [
@@ -48896,9 +48909,9 @@ var render = function() {
           )
         : _vm._e(),
       _vm._v(" "),
-      _vm.currentlyEditing == _vm.oldarticle
+      _vm.currentlyEditing == "title"
         ? _c("div", { staticClass: "articleitem--edit" }, [
-            _c("input", {
+            _c("textarea", {
               directives: [
                 {
                   name: "model",
@@ -48908,9 +48921,12 @@ var render = function() {
                 }
               ],
               ref: "titleinput",
-              staticClass: "form-control",
+              staticClass: "form-control titlefield",
               class: { "is-invalid": _vm.errors.hasOwnProperty("title") },
-              attrs: { type: "text" },
+              attrs: {
+                oninput:
+                  'this.style.height = "";this.style.height = (this.scrollHeight + 3) + "px"'
+              },
               domProps: { value: _vm.article.title },
               on: {
                 input: function($event) {
@@ -48940,7 +48956,7 @@ var render = function() {
                 }
               ],
               ref: "input",
-              staticClass: "form-control",
+              staticClass: "form-control shortfield",
               class: { "is-invalid": _vm.errors.hasOwnProperty("short") },
               attrs: {
                 oninput:
@@ -49091,14 +49107,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ['initBlockquote', 'currentlyEditing'],
 
     data: function data() {
         return {
-            'baseBlockquote': { quote: '' },
-            'workBlockquote': { quote: '' },
+            'baseBlockquote': { quote: '', source: '' },
+            'workBlockquote': { quote: '', source: '' },
             'errors': []
         };
     },
@@ -49137,7 +49155,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var _this2 = this;
 
             axios.post('/api/blockquote/' + this.workBlockquote.id + '/update', {
-                quote: this.workBlockquote.quote
+                quote: this.workBlockquote.quote,
+                source: this.workBlockquote.source
             }).then(function (response) {
                 _this2.baseBlockquote = Object.assign({}, _this2.workBlockquote);
                 _this2.$emit('setCurrentlyEditing', {});
@@ -49165,7 +49184,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "blockquote" }, [
+  return _c("div", { staticClass: "blockquotebox" }, [
     !(_vm.currentlyEditing == _vm.initBlockquote)
       ? _c(
           "div",
@@ -49177,6 +49196,12 @@ var render = function() {
             _c("blockquote", { staticClass: "blockquote" }, [
               _c("p", { staticClass: "mb-0" }, [
                 _vm._v(" " + _vm._s(_vm.workBlockquote.quote) + " ")
+              ]),
+              _vm._v(" "),
+              _c("footer", { staticClass: "blockquote-footer" }, [
+                _c("cite", { attrs: { title: "Source Title" } }, [
+                  _vm._v(" " + _vm._s(_vm.workBlockquote.source) + " ")
+                ])
               ])
             ])
           ]
@@ -49210,6 +49235,31 @@ var render = function() {
                       return
                     }
                     _vm.$set(_vm.workBlockquote, "quote", $event.target.value)
+                  }
+                }
+              })
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.currentlyEditing == _vm.initBlockquote
+            ? _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.workBlockquote.source,
+                    expression: "workBlockquote.source"
+                  }
+                ],
+                staticClass: "form-control",
+                class: { "is-invalid": _vm.errors.hasOwnProperty("source") },
+                attrs: { type: "text" },
+                domProps: { value: _vm.workBlockquote.source },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.workBlockquote, "source", $event.target.value)
                   }
                 }
               })
