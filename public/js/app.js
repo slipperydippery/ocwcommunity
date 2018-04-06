@@ -49140,6 +49140,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     computed: {},
 
     methods: {
+        textBoi: function textBoi(input) {
+            if (input) {
+                var paragraphs = [];
+                input.split("\n").forEach(function (text) {
+                    if (text.trim()) {
+                        paragraphs.push(text);
+                    }
+                });
+                return paragraphs;
+            }
+        },
         editBlockquote: function editBlockquote() {
             this.$emit('setCurrentlyEditing', this.initBlockquote);
         },
@@ -49172,6 +49183,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         cancelEdit: function cancelEdit() {
             this.workBlockquote = Object.assign({}, this.baseBlockquote);
             this.$emit('setCurrentlyEditing', {});
+        },
+        isLastTextBoi: function isLastTextBoi(index) {
+            if (index == this.textBoi(this.workBlockquote.quote).length - 1) {
+                return true;
+            }
+            return false;
         }
     }
 });
@@ -49193,17 +49210,31 @@ var render = function() {
             on: { click: _vm.editBlockquote }
           },
           [
-            _c("blockquote", { staticClass: "blockquote" }, [
-              _c("p", { staticClass: "mb-0" }, [
-                _vm._v(" " + _vm._s(_vm.workBlockquote.quote) + " ")
-              ]),
-              _vm._v(" "),
-              _c("footer", { staticClass: "blockquote-footer" }, [
-                _c("cite", { attrs: { title: "Source Title" } }, [
-                  _vm._v(" " + _vm._s(_vm.workBlockquote.source) + " ")
-                ])
-              ])
-            ])
+            _c(
+              "blockquote",
+              { staticClass: "blockquote" },
+              [
+                _vm._l(_vm.textBoi(_vm.workBlockquote.quote), function(
+                  thisparagraph,
+                  index
+                ) {
+                  return _c(
+                    "p",
+                    { class: { "mb-0": _vm.isLastTextBoi(index) } },
+                    [_vm._v(" " + _vm._s(thisparagraph) + " ")]
+                  )
+                }),
+                _vm._v(" "),
+                _vm.workBlockquote.source
+                  ? _c("footer", { staticClass: "blockquote-footer" }, [
+                      _c("cite", { attrs: { title: "Source Title" } }, [
+                        _vm._v(" " + _vm._s(_vm.workBlockquote.source) + " ")
+                      ])
+                    ])
+                  : _vm._e()
+              ],
+              2
+            )
           ]
         )
       : _vm._e(),

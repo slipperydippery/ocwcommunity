@@ -2,8 +2,8 @@
 	<div class="blockquotebox">
         <div class="articleitem--clean" v-if=" ! (currentlyEditing == initBlockquote) " @click="editBlockquote">
             <blockquote class="blockquote">
-            	<p class="mb-0"> {{ workBlockquote.quote }} </p>
-                <footer class="blockquote-footer"><cite title="Source Title"> {{ workBlockquote.source }} </cite></footer>
+            	<p :class=" { 'mb-0' : isLastTextBoi(index) } " v-for="(thisparagraph, index) in textBoi( workBlockquote.quote )" > {{ thisparagraph }} </p>
+                <footer class="blockquote-footer" v-if="workBlockquote.source"><cite title="Source Title"> {{ workBlockquote.source }} </cite></footer>
             </blockquote>
         </div>
         <div class="articleitem--edit form-group" v-if=" (currentlyEditing == initBlockquote) ">
@@ -63,6 +63,18 @@
         },
 
         methods: {
+            textBoi(input) {
+                if(input){
+                    var paragraphs = [];
+                    input.split("\n").forEach(function(text){
+                        if(text.trim()){
+                            paragraphs.push(text);
+                        }
+                    })
+                    return paragraphs;
+                }
+            },
+
             editBlockquote() {
                 this.$emit('setCurrentlyEditing', this.initBlockquote);
             },
@@ -96,6 +108,13 @@
             cancelEdit() {
                 this.workBlockquote = Object.assign({}, this.baseBlockquote);
                 this.$emit('setCurrentlyEditing', {});
+            },
+
+            isLastTextBoi(index) {
+                if(index == this.textBoi( this.workBlockquote.quote ).length - 1) {
+                    return true;
+                }
+                return false;
             }
         }
     }
